@@ -1,0 +1,153 @@
+var $lang_js = {
+	util:{
+		copyToClipboard:{
+			netscape:"被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'",
+			notCopy:'该浏览器不支持自动复制功能!'
+		},
+		copy:{
+			success:'复制成功!'
+		}
+	},
+	customValid:{
+		rules:{
+			required:"必填",
+			number:"请输入一个合法的数字",
+			variable:"只能是字母和下划线",
+			fields:"首字符为字母,最大长度18",
+			minLength:"长度不少于{0}",
+			maxLength: "长度不超过{0}",
+			rangeLength:"长度必须在{0}之{1}间",
+			email:"请输入一合法的邮箱地址",
+			url:"请输入一合法的网址",
+			date:"请输入一合法的日期",
+			digits:"请输入整数",
+			equalTo:"两次输入不等",
+			range:"请输入在{0}到{1}范围之内的数字",
+			maxvalue:"输入的值不能大于{0}",
+			minvalue:"输入的值不能小于{0}",
+			maxIntLen:"整数位最大长度为{0}",
+			maxDecimalLen:"小数位最大长度为{0}",
+			dateRangeStart:"开始日期必须小于或等于结束日期",
+			dateRangeEnd:"开始日期必须小于或等于结束日期",
+			noDigitsStart : "不能以数字开头",
+			startWithLetter : "只能为字母开头,允许字母、数字和下划线"
+		},
+		form_validate_msg:'表单验证不成功,请检查表单是否正确填写!'
+	},
+	globalType:{
+		menu:{	
+			addType:"增加分类",
+			editType:"编辑分类",
+			delType:"删除分类",
+			assignRights:'分类权限管理',
+			sort:'排序',
+			addMy:'添加我的分类'
+		}
+	},
+	bpm:{
+		flowUtil:{
+			startFlow:{
+				success:"启动流程成功!",
+				failure:"启动流程失败!",
+				confirmRun:"需要启动流程吗?"
+			},
+			recover:{
+				failure:"撤销失败!"
+			}
+		},
+		nodeButton:{
+			start :" 启动流程",
+			image :" 流程示意图",
+			print :"打印",
+			saveDraft:"保存草稿",
+			saveForm:"保存表单",
+			complete:"同意",
+			oppose:"反对",
+			abstent:"弃权",
+			back:"驳回",
+			backToStart:"驳回到发起人",
+			assignee:"转办",
+			addsign:"补签",
+			history:"审批历史",
+			end:"终止",
+			commu:"沟通意见",
+			selectOptType:"请选择操作类型"
+		},
+		formRule:{
+			confirmExport:'确认导出吗？'
+		}
+	},
+	form:{
+		commonDialog:{
+			aliasNull:"别名为空！",
+			aliasError:"输入别名不正确！",
+			displayfield:"没有设置显示字段！",
+			resultfield:"没有设置结果字段！",
+			resultData:"还没有选择数据项！"
+		},
+		formData:{
+			sum:'求和',
+			subtract:'求差',
+			multiplication:'相乘',
+			divide:'相除',
+			average:'求平均值',
+			max:'求最大值',
+			min:'求最小值'
+		},
+		formUtil:{
+			write:'请填写好'
+		}
+	},
+	htDicCombo:{
+		required:'数据字典控件，nodeKey属性必须!'
+	},
+	bpmDataTemplate:{
+		filter:{
+			scriptCondition:'脚本条件',
+			orgAttribute:'组织属性',
+			userAttribute:'用户属性'
+		}
+	},
+	customForm:{
+		moveUp:'向上移动',
+		moveDown:'向下移动',
+		insertAfter:'在后面插入记录',
+		insertBefore:'在前面插入记录',
+		deleteRecord:'删除此记录'
+	},
+	rule:{
+		common:'普通规则',
+		script:'脚本规则',
+		notConformRule:'当前构建条件不符合规则,请仔细检查表达式!',
+		cond_has_nextNode:'条件节点，有子节点  ',
+		cond_no_nextNode:'条件节点 ，当前节点无子节点 没有下面的节点',
+		cond_node:'条件节点'
+	},
+	selectOption:{
+		notSelect:'未选择任何选项!',
+		noSelection:'源列表中无选项可添加!'
+	},
+	foldBoxLg:{
+		condition:'查询条件',
+		expand:'展开',
+		collapse:'收起'
+	},
+	share:{
+		errorMsg:'方法GetPingyin用法：GetPingyin(String) 或 GetPingyin({input:"用于计算拼音的字符串",preCallback:Function,postCallback:Function}),只有参数input是必填！'
+	},
+	ligertab:{
+		 closeMessage: '关闭当前页',
+        closeOtherMessage: '关闭其他',
+        closeAllMessage: '关闭所有',
+        reloadMessage: '刷新'
+	},
+	inTable:{
+		noGroup:'未分组'
+	},
+	icon:{
+		noSelectedPicture:'没有选择图标'
+	},
+	piugin:{
+		choose:'重选模板'
+	}
+};

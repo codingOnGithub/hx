@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.platform.model.system.ResourcesLang">
+	<resultMap id="ResourcesLang" type="com.hotent.platform.model.system.ResourcesLang">
+		<id property="id" column="ID" jdbcType="NUMERIC" />
+		<result property="resId" column="RES_ID" jdbcType="NUMERIC" />
+		<result property="lanType" column="LAN_TYPE" jdbcType="VARCHAR" />
+		<result property="lanMsg" column="LAN_MSG" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="columns">
+		ID,RES_ID,LAN_TYPE,LAN_MSG
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID =#{id} </if>
+			<if test="@Ognl@isNotEmpty(resId)"> AND RES_ID =#{resId} </if>
+			<if test="@Ognl@isNotEmpty(lanType)"> AND LAN_TYPE LIKE #{lanType}  </if>
+			<if test="@Ognl@isNotEmpty(lanMsg)"> AND LAN_MSG LIKE #{lanMsg}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.system.ResourcesLang">
+		INSERT INTO SYS_LAN_RES
+		(ID,RES_ID,LAN_TYPE,LAN_MSG)
+		VALUES
+		(#{id,jdbcType=NUMERIC},
+		#{resId,jdbcType=NUMERIC}, #{lanType,jdbcType=VARCHAR},
+		#{lanMsg,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM SYS_LAN_RES
+		WHERE
+		ID=#{id}
+	</delete>
+
+	<update id="update" parameterType="com.hotent.platform.model.system.ResourcesLang">
+		UPDATE SYS_LAN_RES SET
+		RES_ID=#{resId,jdbcType=NUMERIC},
+		LAN_TYPE=#{lanType,jdbcType=VARCHAR},
+		LAN_MSG=#{lanMsg,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="ResourcesLang">
+		SELECT
+		<include refid="columns" />
+		FROM SYS_LAN_RES
+		WHERE
+		ID=#{id}
+	</select>
+
+	<select id="getAll" resultMap="ResourcesLang">
+		SELECT
+		<include refid="columns" />
+		FROM SYS_LAN_RES
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+			order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+			order by ID desc
+		</if>
+	</select>
+	<select id="getByResId" parameterType="java.lang.Long"
+		resultMap="ResourcesLang">
+		SELECT
+		<include refid="columns" />
+		FROM SYS_LAN_RES
+		WHERE
+		RES_ID=#{resId}
+	</select>
+
+</mapper>

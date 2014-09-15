@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DatasourceManager xmlVersion="20120529" releaseVersion="7.0.0">
+<ConnectionMap>
+<Connection name="bpm3" class="com.fr.data.impl.JDBCDatabaseConnection">
+<DatabaseAttr/>
+<JDBCDatabaseAttr url="jdbc:oracle:thin:@192.168.1.80:1521:orcl" driver="oracle.jdbc.OracleDriver" user="bpmx32" password="___0071003e00670077005700e7" encryptPassword="true">
+<DBCPAttr/>
+</JDBCDatabaseAttr>
+</Connection>
+</ConnectionMap>
+</DatasourceManager>

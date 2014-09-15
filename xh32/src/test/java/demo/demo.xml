@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ciied="com.ibm.ilog.elixir.diagram"
+	xmlns:bg="bpm.graphic" xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+	xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+	xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:activiti="http://activiti.org/bpmn"
+	targetNamespace="http://activiti.org/bpmn20">
+	<process id="nodeOutPut" name="节点输出测试">
+		<extensionElements>
+			<activiti:executionListener event="start"
+				class="com.hotent.platform.service.bpm.listener.StartEventListener" />
+			<activiti:executionListener event="end"
+				class="com.hotent.platform.service.bpm.listener.EndEventListener" />
+		</extensionElements>
+		<startEvent activiti:initiator="startUser" id="StartEvent1"
+			name="开始" />
+		<endEvent id="EndEvent2" name="结束2" />
+		<userTask id="UserTask1" name="用户任务1">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<userTask id="UserTask2" name="用户任务2">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<userTask id="UserTask3" name="用户任务3">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<userTask id="UserTask7" name="用户任务7">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<userTask id="UserTask8" name="用户任务8">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<userTask id="UserTask9" name="用户任务9">
+			<documentation />
+			<extensionElements>
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+					event="create" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+					event="assignment" />
+				<activiti:taskListener
+					class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+					event="complete" />
+			</extensionElements>
+		</userTask>
+		<sequenceFlow id="sequenceFlow5" name="" sourceRef="StartEvent1"
+			targetRef="UserTask1" />
+		<sequenceFlow id="sequenceFlow6" name="" sourceRef="UserTask1"
+			targetRef="UserTask2" />
+		<sequenceFlow id="sequenceFlow7" name="" sourceRef="UserTask2"
+			targetRef="UserTask3" />
+		<sequenceFlow id="sequenceFlow8" name="" sourceRef="UserTask3"
+			targetRef="SubProcess1" />
+		<sequenceFlow id="sequenceFlow9" name="" sourceRef="SubProcess1"
+			targetRef="UserTask7" />
+		<sequenceFlow id="sequenceFlow10" name="" sourceRef="UserTask7"
+			targetRef="EndEvent2" />
+		<sequenceFlow id="sequenceFlow11" name="" sourceRef="UserTask1"
+			targetRef="UserTask8" />
+		<sequenceFlow id="sequenceFlow12" name="" sourceRef="UserTask8"
+			targetRef="XORGateway1" />
+		<sequenceFlow id="sequenceFlow13" name="" sourceRef="XORGateway1"
+			targetRef="UserTask9" />
+		<sequenceFlow id="sequenceFlow14" name="" sourceRef="UserTask9"
+			targetRef="UserTask2" />
+		<sequenceFlow id="sequenceFlow15" name="" sourceRef="XORGateway1"
+			targetRef="UserTask3" />
+		<subProcess id="SubProcess1" name="子流程1">
+			<startEvent activiti:initiator="startUser" id="StartEvent2"
+				name="开始" />
+			<endEvent id="EndEvent1" name="结束1" />
+			<userTask id="UserTask4" name="用户任务4">
+				<documentation />
+				<extensionElements>
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+						event="create" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+						event="assignment" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+						event="complete" />
+				</extensionElements>
+			</userTask>
+			<userTask id="UserTask5" name="用户任务5">
+				<documentation />
+				<extensionElements>
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+						event="create" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+						event="assignment" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+						event="complete" />
+				</extensionElements>
+			</userTask>
+			<userTask id="UserTask6" name="用户任务6">
+				<documentation />
+				<extensionElements>
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCreateListener"
+						event="create" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskAssignListener"
+						event="assignment" />
+					<activiti:taskListener
+						class="com.hotent.platform.service.bpm.listener.TaskCompleteListener"
+						event="complete" />
+				</extensionElements>
+			</userTask>
+			<sequenceFlow id="sequenceFlow1" name="" sourceRef="StartEvent2"
+				targetRef="UserTask4" />
+			<sequenceFlow id="sequenceFlow2" name="" sourceRef="UserTask4"
+				targetRef="UserTask5" />
+			<sequenceFlow id="sequenceFlow3" name="" sourceRef="UserTask5"
+				targetRef="UserTask6" />
+			<sequenceFlow id="sequenceFlow4" name="" sourceRef="UserTask6"
+				targetRef="EndEvent1" />
+		</subProcess>
+		<exclusiveGateway id="XORGateway1" name="分支1" />
+	</process>
+	<bpmndi:BPMNDiagram id="BPMNDiagram_nodeOutPut">
+		<bpmndi:BPMNPlane bpmnElement="nodeOutPut" id="BPMNPlane_nodeOutPut">
+			<bpmndi:BPMNShape bpmnElement="StartEvent1"
+				id="BPMNShape_StartEvent1">
+				<omgdc:Bounds width="31" height="31" x="160" y="120" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="StartEvent2"
+				id="BPMNShape_StartEvent2">
+				<omgdc:Bounds width="31" height="31" x="600.0" y="341.0" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="EndEvent1" id="BPMNShape_EndEvent1">
+				<omgdc:Bounds width="34" height="34" x="1120.0" y="341.0" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="EndEvent2" id="BPMNShape_EndEvent2">
+				<omgdc:Bounds width="34" height="34" x="1060" y="640" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask1" id="BPMNShape_UserTask1">
+				<omgdc:Bounds height="50" width="90" x="270" y="110" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask2" id="BPMNShape_UserTask2">
+				<omgdc:Bounds height="50" width="90" x="320" y="240" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask3" id="BPMNShape_UserTask3">
+				<omgdc:Bounds height="50" width="90" x="470" y="240" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask4" id="BPMNShape_UserTask4">
+				<omgdc:Bounds height="50" width="90" x="690.0" y="331.0" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask5" id="BPMNShape_UserTask5">
+				<omgdc:Bounds height="50" width="90" x="840.0" y="331.0" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask6" id="BPMNShape_UserTask6">
+				<omgdc:Bounds height="50" width="90" x="980.0" y="331.0" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask7" id="BPMNShape_UserTask7">
+				<omgdc:Bounds height="50" width="90" x="850" y="630" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask8" id="BPMNShape_UserTask8">
+				<omgdc:Bounds height="50" width="90" x="30" y="250" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="UserTask9" id="BPMNShape_UserTask9">
+				<omgdc:Bounds height="50" width="90" x="250" y="410" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="SubProcess1"
+				id="BPMNShape_SubProcess1">
+				<omgdc:Bounds height="220" width="660" x="570" y="260" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape bpmnElement="XORGateway1"
+				id="BPMNShape_XORGateway1">
+				<omgdc:Bounds height="50" width="50" x="110" y="410" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow1" id="BPMNEdge_sequenceFlow1">
+				<omgdi:waypoint x="631.0" y="356.5"></omgdi:waypoint>
+
+				<omgdi:waypoint x="660.5" y="356.5"></omgdi:waypoint>
+
+				<omgdi:waypoint x="660.5" y="356.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="690.0" y="356.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow2" id="BPMNEdge_sequenceFlow2">
+				<omgdi:waypoint x="780.0" y="356.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="840.0" y="356.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow3" id="BPMNEdge_sequenceFlow3">
+				<omgdi:waypoint x="930.0" y="356.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="980.0" y="356.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow4" id="BPMNEdge_sequenceFlow4">
+				<omgdi:waypoint x="1070.0" y="356.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1095.0" y="356.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1095.0" y="358.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1120.0" y="358.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow5" id="BPMNEdge_sequenceFlow5">
+				<omgdi:waypoint x="191.0" y="135.5"></omgdi:waypoint>
+
+				<omgdi:waypoint x="230.5" y="135.5"></omgdi:waypoint>
+
+				<omgdi:waypoint x="230.5" y="135.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="270.0" y="135.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow6" id="BPMNEdge_sequenceFlow6">
+				<omgdi:waypoint x="320.0" y="160.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="320.0" y="200.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="365.0" y="200.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="365.0" y="240.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow7" id="BPMNEdge_sequenceFlow7">
+				<omgdi:waypoint x="410.0" y="265.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="470.0" y="265.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow8" id="BPMNEdge_sequenceFlow8">
+				<omgdi:waypoint x="520.0" y="290.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="520.0" y="314.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="567.5" y="314.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="567.5" y="370.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="570.0" y="370.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow9" id="BPMNEdge_sequenceFlow9">
+				<omgdi:waypoint x="900.0" y="480.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="900.0" y="555.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="895.0" y="555.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="895.0" y="630.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow10"
+				id="BPMNEdge_sequenceFlow10">
+				<omgdi:waypoint x="940.0" y="655.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1000.0" y="655.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1000.0" y="657.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="1060.0" y="657.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow11"
+				id="BPMNEdge_sequenceFlow11">
+				<omgdi:waypoint x="310.0" y="160.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="310.0" y="205.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="75.0" y="205.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="75.0" y="250.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow12"
+				id="BPMNEdge_sequenceFlow12">
+				<omgdi:waypoint x="75.0" y="300.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="75.0" y="435.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="110.0" y="435.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow13"
+				id="BPMNEdge_sequenceFlow13">
+				<omgdi:waypoint x="160.0" y="435.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="250.0" y="435.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow14"
+				id="BPMNEdge_sequenceFlow14">
+				<omgdi:waypoint x="340.0" y="435.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="365.0" y="435.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="365.0" y="290.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge bpmnElement="sequenceFlow15"
+				id="BPMNEdge_sequenceFlow15">
+				<omgdi:waypoint x="135.0" y="460.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="135.0" y="484.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="510.0" y="484.0"></omgdi:waypoint>
+
+				<omgdi:waypoint x="510.0" y="290.0"></omgdi:waypoint>
+				<bpmndi:BPMNLabel>
+					<omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds>
+				</bpmndi:BPMNLabel>
+			</bpmndi:BPMNEdge>
+		</bpmndi:BPMNPlane>
+	</bpmndi:BPMNDiagram>
+</definitions>

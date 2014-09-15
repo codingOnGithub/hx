@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<processCmd>
+    <agentTask>false</agentTask>
+    <back>0</back>
+    <businessKey>123</businessKey>
+    <currentUserId></currentUserId>
+    <flowKey>orderCheckFlow</flowKey>
+    <forkUserType>user</forkUserType>
+    <formData></formData>
+    <invokeExternal>false</invokeExternal>
+    <nodeNotifyUserMap/>
+    <onlyCompleteTask>false</onlyCompleteTask>
+    <recover>false</recover>
+    <signTask>false</signTask>
+    <userAccount>limin</userAccount>
+    <variables>
+        <entry>
+            <key>total</key>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:decimal">12303.3</value>
+        </entry>
+        <entry>
+            <key>orderNo</key>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">SHIP_NO</value>
+        </entry>
+        <entry>
+            <key>orderId</key>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:long">123</value>
+        </entry>
+    </variables>
+</processCmd>

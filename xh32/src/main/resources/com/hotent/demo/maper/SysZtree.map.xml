@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.demo.model.ztree.SysZtree">
+	<resultMap id="SysZtree" type="com.hotent.demo.model.ztree.SysZtree">
+		<id property="typeid" column="TYPEID" jdbcType="NUMERIC"/>
+		<result property="typename" column="TYPENAME" jdbcType="VARCHAR"/>
+		<result property="alias" column="ALIAS" jdbcType="VARCHAR"/>
+		<result property="idkey" column="IDKEY" jdbcType="VARCHAR"/>
+		<result property="namekey" column="NAMEKEY" jdbcType="VARCHAR"/>
+		<result property="pidkey" column="PIDKEY" jdbcType="VARCHAR"/>
+		<result property="urls" column="URLS" jdbcType="VARCHAR"/>
+		<result property="rootpid" column="ROOTPID" jdbcType="VARCHAR"/>
+		<result property="roottitle" column="ROOTTITLE" jdbcType="VARCHAR"/>
+		<result property="expandslevel" column="EXPANDSLEVEL" jdbcType="NUMERIC"/>
+		<result property="dataparams" column="DATAPARAMS" jdbcType="VARCHAR"/>
+		<result property="callbacks" column="CALLBACKS" jdbcType="CLOB"/>
+		<result property="asyncs" column="ASYNCS" jdbcType="CLOB"/>
+		<result property="checks" column="CHECKS" jdbcType="CLOB"/>
+		<result property="datas" column="DATAS" jdbcType="CLOB"/>
+		<result property="edits" column="EDITS" jdbcType="CLOB"/>
+		<result property="views" column="VIEWS" jdbcType="CLOB"/>
+		<result property="tablename" column="TABLENAME" jdbcType="VARCHAR"/>
+		<result property="istable" column="ISTABLE" jdbcType="NUMERIC"/>
+		<result property="dsname" column="DSNAME" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		TYPEID,TYPENAME,ALIAS,IDKEY,NAMEKEY,PIDKEY,URLS,ROOTPID,ROOTTITLE,EXPANDSLEVEL,DATAPARAMS,CALLBACKS,ASYNCS,CHECKS,DATAS,EDITS,VIEWS,TABLENAME,ISTABLE,DSNAME
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(typeid)"> AND TYPEID  =#{typeid} </if>
+			<if test="@Ognl@isNotEmpty(typename)"> AND TYPENAME  LIKE '%${typename}%'  </if>
+			<if test="@Ognl@isNotEmpty(alias)"> AND ALIAS  LIKE '%${alias}%'  </if>
+			<if test="@Ognl@isNotEmpty(idkey)"> AND IDKEY  LIKE '%${idkey}%'  </if>
+			<if test="@Ognl@isNotEmpty(namekey)"> AND NAMEKEY  LIKE '%${namekey}%'  </if>
+			<if test="@Ognl@isNotEmpty(pidkey)"> AND PIDKEY  LIKE '%${pidkey}%'  </if>
+			<if test="@Ognl@isNotEmpty(urls)"> AND URLS  LIKE '%${urls}%'  </if>
+			<if test="@Ognl@isNotEmpty(rootpid)"> AND ROOTPID  LIKE '%${rootpid}%'  </if>
+			<if test="@Ognl@isNotEmpty(roottitle)"> AND ROOTTITLE  LIKE '%${roottitle}%'  </if>
+			<if test="@Ognl@isNotEmpty(dataparams)"> AND DATAPARAMS  LIKE '%${dataparams}%'  </if>
+			<if test="@Ognl@isNotEmpty(tablename)"> AND TABLENAME  LIKE '%${tablename}%'  </if>
+			<if test="@Ognl@isNotEmpty(dsname)"> AND DSNAME  LIKE '%${dsname}%'  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.demo.model.ztree.SysZtree">
+		INSERT INTO sys_ztree
+		(TYPEID,TYPENAME,ALIAS,IDKEY,NAMEKEY,PIDKEY,URLS,ROOTPID,ROOTTITLE,EXPANDSLEVEL,DATAPARAMS,CALLBACKS,ASYNCS,CHECKS,DATAS,EDITS,VIEWS,TABLENAME,ISTABLE,DSNAME)
+		VALUES
+		(#{typeid,jdbcType=NUMERIC}, #{typename,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{idkey,jdbcType=VARCHAR}, #{namekey,jdbcType=VARCHAR}, #{pidkey,jdbcType=VARCHAR}, #{urls,jdbcType=VARCHAR}, #{rootpid,jdbcType=VARCHAR}, #{roottitle,jdbcType=VARCHAR}, #{expandslevel,jdbcType=NUMERIC}, #{dataparams,jdbcType=VARCHAR}, #{callbacks,jdbcType=CLOB}, #{asyncs,jdbcType=CLOB}, #{checks,jdbcType=CLOB}, #{datas,jdbcType=CLOB}, #{edits,jdbcType=CLOB}, #{views,jdbcType=CLOB}, #{tablename,jdbcType=VARCHAR}, #{istable,jdbcType=NUMERIC}, #{dsname,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM sys_ztree 
+		WHERE
+		TYPEID=#{typeid}
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.demo.model.ztree.SysZtree">
+		UPDATE sys_ztree SET
+		TYPENAME=#{typename,jdbcType=VARCHAR},
+		ALIAS=#{alias,jdbcType=VARCHAR},
+		IDKEY=#{idkey,jdbcType=VARCHAR},
+		NAMEKEY=#{namekey,jdbcType=VARCHAR},
+		PIDKEY=#{pidkey,jdbcType=VARCHAR},
+		URLS=#{urls,jdbcType=VARCHAR},
+		ROOTPID=#{rootpid,jdbcType=VARCHAR},
+		ROOTTITLE=#{roottitle,jdbcType=VARCHAR},
+		EXPANDSLEVEL=#{expandslevel,jdbcType=NUMERIC},
+		DATAPARAMS=#{dataparams,jdbcType=VARCHAR},
+		CALLBACKS=#{callbacks,jdbcType=CLOB},
+		ASYNCS=#{asyncs,jdbcType=CLOB},
+		CHECKS=#{checks,jdbcType=CLOB},
+		DATAS=#{datas,jdbcType=CLOB},
+		EDITS=#{edits,jdbcType=CLOB},
+		VIEWS=#{views,jdbcType=CLOB},
+		TABLENAME=#{tablename,jdbcType=VARCHAR},
+		ISTABLE=#{istable,jdbcType=NUMERIC},
+		DSNAME=#{dsname,jdbcType=VARCHAR}
+		WHERE
+		TYPEID=#{typeid}
+	</update>
+	
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="SysZtree">
+		SELECT <include refid="columns"/>
+		FROM sys_ztree
+		WHERE
+		TYPEID=#{typeid}
+	</select>
+	
+	<select id="getTreeTypeByAlias" parameterType="java.lang.String" resultMap="SysZtree">
+		SELECT <include refid="columns"/>
+		FROM sys_ztree
+		WHERE
+		alias=#{alias}
+	</select>
+	
+	<select id="getAll" resultMap="SysZtree">
+		SELECT <include refid="columns"/>
+		FROM sys_ztree   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by TYPEID desc
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.platform.model.bpm.BpmFormLanguage">
+	<resultMap id="BpmFormLanguage" type="com.hotent.platform.model.bpm.BpmFormLanguage">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="formid" column="FORMID" jdbcType="VARCHAR"/>
+		<result property="reskey" column="RESKEY" jdbcType="VARCHAR"/>
+		<result property="resvalue" column="RESVALUE" jdbcType="CLOB"/>
+		<result property="lantype" column="LANTYPE" jdbcType="VARCHAR"/>
+		<result property="typeid" column="TYPEID" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,FORMID,RESKEY,RESVALUE,LANTYPE,TYPEID
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(Id)"> AND ID  =#{Id} </if>
+			<if test="@Ognl@isNotEmpty(formId)"> AND FORMID  =#{formId} </if>
+			<if test="@Ognl@isNotEmpty(resKey)"> AND RESKEY  LIKE #{resKey}  </if>
+			<if test="@Ognl@isNotEmpty(resValue)"> AND RESVALUE  LIKE #{resValue}  </if>
+			<if test="@Ognl@isNotEmpty(lanType)"> AND LANTYPE  LIKE #{lanType}  </if>
+			<if test="@Ognl@isNotEmpty(typeId)"> AND TYPEID  = #{typeId}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.bpm.BpmFormLanguage">
+		INSERT INTO BPM_FORM_LANGUAGE
+		(ID,FORMID,RESKEY,RESVALUE,LANTYPE,TYPEID)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{formid,jdbcType=VARCHAR}, #{reskey,jdbcType=VARCHAR}, #{resvalue,jdbcType=CLOB}, #{lantype,jdbcType=VARCHAR}, #{typeid,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM BPM_FORM_LANGUAGE 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<delete id="delByFormId" parameterType="java.lang.String">
+		DELETE FROM BPM_FORM_LANGUAGE 
+		WHERE
+		FORMID=#{formId}
+	</delete>
+	
+	<delete id="delByFormIdAndType" parameterType="java.lang.String">
+		DELETE FROM BPM_FORM_LANGUAGE 
+		WHERE
+		FORMID=#{formId} and TYPEID  = #{typeId}
+	</delete>
+	
+	<delete id="delByMapKey" parameterType="java.util.Map">
+		DELETE FROM BPM_FORM_LANGUAGE 
+		<include refid="dynamicWhere" />
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.platform.model.bpm.BpmFormLanguage">
+		UPDATE BPM_FORM_LANGUAGE SET
+		FORMID=#{formid,jdbcType=VARCHAR},
+		RESKEY=#{reskey,jdbcType=VARCHAR},
+		RESVALUE=#{resvalue,jdbcType=CLOB},
+		LANTYPE=#{lantype,jdbcType=VARCHAR},
+		TYPEID=#{typeid,jdbcType=NUMERIC}
+		WHERE
+		ID=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="BpmFormLanguage">
+		SELECT <include refid="columns"/>
+		FROM BPM_FORM_LANGUAGE
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="BpmFormLanguage">
+		SELECT <include refid="columns"/>
+		FROM BPM_FORM_LANGUAGE   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+	
+	<select id="getByFormIdAndResKey" parameterType="java.util.Map" resultMap="BpmFormLanguage">
+		SELECT <include refid="columns"/>
+		FROM BPM_FORM_LANGUAGE
+		WHERE
+		FORMID=#{formId} and RESKEY=#{resKey} and TYPEID  = #{typeId}
+	</select>
+	
+	<select id="getByMapKey" parameterType="java.util.Map" resultMap="BpmFormLanguage">
+		SELECT <include refid="columns"/>
+		FROM BPM_FORM_LANGUAGE
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="getByFormIdResKeyAndLanguage" parameterType="java.util.Map" resultMap="BpmFormLanguage">
+		SELECT <include refid="columns"/>
+		FROM BPM_FORM_LANGUAGE
+		WHERE
+		FORMID=#{formId} and RESKEY=#{resKey} and LANTYPE=#{lanType} and TYPEID=#{typeId}
+	</select>
+</mapper>

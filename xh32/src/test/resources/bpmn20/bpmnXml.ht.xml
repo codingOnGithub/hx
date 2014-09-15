@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ciied="com.ibm.ilog.elixir.diagram" xmlns:fg="bpm.graphic" xmlns:bg="bpm.graphic" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:ht="http://www.jee-soft.cn/BPMN20EXT" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="http://activiti.org/bpmn20" xsi:schemaLocation="http://www.jee-soft.cn/BPMN20EXT BPMN20EXT.xsd">
+  <process  id="ssss" name="sss">
+    <extensionElements>
+      <activiti:executionListener event="start" class="com.hotent.platform.service.bpm.listener.StartEventListener"/>
+      <activiti:executionListener event="end" class="com.hotent.platform.service.bpm.listener.EndEventListener"/>
+    </extensionElements>
+    <startEvent activiti:initiator="startUser" id="StartEvent1" name="开始"/>
+    <endEvent id="EndEvent1" name="结束1"/>
+    <userTask id="UserTask1" name="用户任务1">
+      <documentation/>
+      <extensionElements>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskCreateListener" event="create"/>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskAssignListener" event="assignment"/>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskCompleteListener" event="complete"/>
+        <ht:order>1</ht:order>
+      </extensionElements>
+    </userTask>
+    <userTask id="UserTask2" name="用户任务2">
+      <documentation/>
+      <extensionElements>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskCreateListener" event="create"/>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskAssignListener" event="assignment"/>
+        <activiti:taskListener class="com.hotent.platform.service.bpm.listener.TaskCompleteListener" event="complete"/>
+        <ht:order>2</ht:order>
+      </extensionElements>
+    </userTask>
+    <serviceTask activiti:class="com.hotent.platform.service.bpm.MessageTask" id="MessageTask1" name="消息任务1">
+      <extensionElements>
+        <ht:order>3</ht:order>
+      </extensionElements>
+    </serviceTask>
+    <callActivity id="startSubFlowTask1" name="外部子流程1" calledElement="aaa">
+      <extensionElements>
+        <activiti:executionListener class="com.hotent.platform.service.bpm.listener.CallSubProcessStartListener" event="start"/>
+        <activiti:executionListener class="com.hotent.platform.service.bpm.listener.CallSubProcessEndListener" event="end"/>
+        <activiti:in target="innerPassVars" source="outPassVars"/>
+        <activiti:out target="outPassVars" source="innerPassVars"/>
+        <ht:order>0</ht:order>
+      </extensionElements>
+    </callActivity>
+    <sequenceFlow sourceRef="UserTask1" targetRef="UserTask2" id="sequenceFlow1" name=""/>
+    <sequenceFlow sourceRef="StartEvent1" targetRef="UserTask1" id="sequenceFlow2" name=""/>
+    <sequenceFlow sourceRef="UserTask2" targetRef="MessageTask1" id="sequenceFlow3" name=""/>
+    <sequenceFlow sourceRef="MessageTask1" targetRef="startSubFlowTask1" id="sequenceFlow4" name=""/>
+    <sequenceFlow sourceRef="startSubFlowTask1" targetRef="SubProcess1" id="sequenceFlow5" name=""/>
+    <sequenceFlow sourceRef="SubProcess1" targetRef="EndEvent1" id="sequenceFlow6" name=""/>
+    <subProcess id="SubProcess1" name="内嵌子流程1">
+      <extensionElements>
+        <activiti:executionListener event="start" class="com.hotent.platform.service.bpm.listener.SubProcessStartListener"/>
+        <activiti:executionListener event="end" class="com.hotent.platform.service.bpm.listener.SubProcessEndListener"/>
+      </extensionElements>
+    </subProcess>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ssss">
+    <bpmndi:BPMNPlane bpmnElement="ssss" id="BPMNPlane_ssss">
+      <bpmndi:BPMNShape bpmnElement="StartEvent1" id="BPMNShape_StartEvent1">
+        <omgdc:Bounds width="33" height="33" x="100" y="59.5"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent1" id="BPMNShape_EndEvent1">
+        <omgdc:Bounds width="34" height="34" x="806" y="59"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask1" id="BPMNShape_UserTask1">
+        <omgdc:Bounds height="50" width="90" x="173" y="51"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask2" id="BPMNShape_UserTask2">
+        <omgdc:Bounds height="50" width="90" x="303" y="51"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="MessageTask1" id="BPMNShape_MessageTask1">
+        <omgdc:Bounds height="50" width="90" x="433" y="51"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startSubFlowTask1" id="BPMNShape_startSubFlowTask1">
+        <omgdc:Bounds height="50" width="90" x="563" y="51"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SubProcess1" id="BPMNShape_SubProcess1">
+        <omgdc:Bounds height="52" width="73" x="693" y="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow1" id="BPMNEdge_sequenceFlow1">
+<omgdi:waypoint x="263.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="303.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow2" id="BPMNEdge_sequenceFlow2">
+<omgdi:waypoint x="133.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="173.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow3" id="BPMNEdge_sequenceFlow3">
+<omgdi:waypoint x="393.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="433.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow4" id="BPMNEdge_sequenceFlow4">
+<omgdi:waypoint x="523.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="563.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow5" id="BPMNEdge_sequenceFlow5">
+<omgdi:waypoint x="653.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="693.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow6" id="BPMNEdge_sequenceFlow6">
+<omgdi:waypoint x="766.0" y="76.0"></omgdi:waypoint>
+
+<omgdi:waypoint x="806.0" y="76.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel> <omgdc:Bounds x="-50" y="0" width="100" height="14"></omgdc:Bounds></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

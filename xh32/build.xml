@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="打包项目工具" default="打WAR包" >
+	<!--将web的文件copy到这个目录-->
+	<property name="out.dir" location="out" /> 
+	<!--将项目的源码根路径目录定义为src.dir，路径填写到location中-->
+	<property name="src.dir" location="src/main" />
+	<!--将bpm3项目下的网站目录定义为web.dir-->
+	<property name="web.dir" location="${src.dir}/webapp" />
+	 <!--在项目根目录下新建一个build文件夹，最终的打包war将放在该目录下-->
+	<property name="build.dir" location="build" /> 
+	<!--定义yuicompressor.jar节点，并把路径指向 yuicompressor-2.4.6.jar 实际路径-->
+	  
+	<!--定义compress.dir节点，该节点作为压缩文件临时存放文件夹-->
+	<property name="compress.dir" location="${out.dir}/compress" /> 
+	
+	<property name="classes.dir" location="src/main/webapp/WEB-INF/classes" />
+	<property name="doc.dir" location="metadata/doc/javadoc" />	
+	
+
+	<!--引用的jar包-->
+	<path id="libRef">
+		<!--将dir属性填写为实际bpm3项目的jar包存放路径-->
+		<fileset dir="${src.dir}/webapp/WEB-INF/lib/" includes="*.jar"/>
+		<!--将dir属性填写本地Tomcat的lib目录存放路径-->
+		<fileset dir="metadata/refLib" includes="*.jar"/>
+	</path>
+	<!--将编译类文件-->
+	<target name="打WAR包" description="打WAR包">  
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir ="${out.dir}"/>
+		<delete dir ="${web.dir}/WEB-INF/classes/com"/>  
+	 	
+		<!--srcdir 属性为要编译源码的路径，destdir 属性为编译后jar包存放路径-->
+		<javac srcdir ="${src.dir}/java" destdir ="${web.dir}/WEB-INF/classes" classpathref="libRef"
+			debug="true"
+            optimize="true"
+            encoding="UTF-8"
+			includeantruntime="on">
+		</javac> 
+		<jar destfile="${web.dir}/WEB-INF/lib/hotent.jar">
+				<fileset dir="${web.dir}/WEB-INF/classes">
+					<include name="com/hotent/**/**.class"/>
+				</fileset>
+		</jar>	
+		<delete dir ="${web.dir}/WEB-INF/classes/com"/>
+		
+		<copy todir="${web.dir}/WEB-INF/classes/com/hotent/platform/maper">
+			<fileset dir="${src.dir}/resources/com/hotent/platform/maper" includes="*.xml,*.xsl"   > </fileset>
+		</copy>
+		<copy todir="${web.dir}/WEB-INF/classes/com/hotent/core/bpm/graph">
+			<fileset dir="${src.dir}/resources/com/hotent/core/bpm/graph" includes="*.xml,*.xsl"   > </fileset>
+			
+		</copy>
+		<copy todir="${web.dir}/WEB-INF/classes/com/hotent/core/bpm/graph/image">
+			<fileset dir="${src.dir}/resources/com/hotent/core/bpm/graph/image" includes="*.png"   > </fileset>
+		</copy>
+		
+		
+		<copy todir="${out.dir}">
+			<fileset dir="${web.dir}"></fileset>
+		</copy>
+		
+		
+		<!--以下3个copy节点是指定要进行压缩的原路径-->
+ 		<copy todir="${compress.dir}/js/hotent">
+			<fileset dir="${out.dir}/js/hotent" ></fileset>
+		</copy> 
+		<copy todir="${compress.dir}/js/util">
+			<fileset dir="${out.dir}/js/util" includes="form.js,util.js"></fileset>
+		</copy>
+		<copy todir="${compress.dir}/styles/default/css">
+			<fileset dir="${out.dir}/styles/default/css"></fileset>
+		</copy> 
+		
+		<taskdef name="compress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">  
+			<classpath>  
+				<path refid="libRef"/>  
+			</classpath>  
+		</taskdef>  
+		
+		<compress linebreak="9000000" warn="false" munge="yes"      preserveallsemicolons="true" outputfolder="${out.dir}">  
+			            <fileset dir="${compress.dir}">  
+			                <include name="**/*.js"/>  
+			            </fileset>
+		</compress>
+		
+		<compress linebreak="9000000" warn="false" munge="yes"  preserveallsemicolons="true" outputfolder="${out.dir}/styles/">  
+			            <fileset dir="${compress.dir}/styles">  
+			                <include name="**/*.css"/>  
+			            </fileset>  
+		</compress>
+		
+	    <!--删除临时文件-->
+	    <delete dir="${compress.dir}"/>
+		
+		<delete file="${web.dir}/WEB-INF/classes/displaytag.properties"></delete>
+		<native2ascii encoding="UTF-8" src="${web.dir}/WEB-INF/classes/" dest="${out.dir}/WEB-INF/classes/" includes="*.properties"  />
+		<war destfile="${build.dir}/bpm3.war" webxml="${out.dir}/WEB-INF/web.xml" encoding="UTF-8">
+					<fileset dir="${out.dir}">
+					</fileset>
+		</war>
+		<delete dir="${out.dir}"/>
+		
+	</target>  
+	
+	<target name="打WAR包不压缩JSCSS" description="打WAR包不压缩JSCSS">  
+			<mkdir dir="${build.dir}"/>
+			<mkdir dir ="${out.dir}"/>
+			<delete dir ="${web.dir}/WEB-INF/classes/com"/>  
+		 	
+			<!--srcdir 属性为要编译源码的路径，destdir 属性为编译后jar包存放路径-->
+			<javac srcdir ="${src.dir}/java" destdir ="${web.dir}/WEB-INF/classes" classpathref="libRef"
+				debug="true"
+	            optimize="true"
+	            encoding="UTF-8"
+				includeantruntime="on">
+			</javac> 
+			
+			<jar destfile="${web.dir}/WEB-INF/lib/hotent.jar">
+					<fileset dir="${web.dir}/WEB-INF/classes">
+						<include name="com/hotent/**/**.class"/>
+					</fileset>
+			</jar>	
+			<delete dir ="${web.dir}/WEB-INF/classes/com"/>
+		
+			<copy todir="${web.dir}/WEB-INF/classes/com/hotent/platform/maper">
+				<fileset dir="${src.dir}/resources/com/hotent/platform/maper" includes="*.xml,*.xsl"   > </fileset>
+			</copy>
+			<copy todir="${web.dir}/WEB-INF/classes/com/hotent/core/bpm/graph">
+				<fileset dir="${src.dir}/resources/com/hotent/core/bpm/graph" includes="*.xml,*.xsl"   > </fileset>
+			</copy>
+			<copy todir="${web.dir}/WEB-INF/classes/com/hotent/core/bpm/graph/image">
+				<fileset dir="${src.dir}/resources/com/hotent/core/bpm/graph/image" includes="*.png"   > </fileset>
+			</copy>
+			<copy todir="${out.dir}">
+				<fileset dir="${web.dir}"></fileset>
+			</copy>
+			
+			<delete file="${web.dir}/WEB-INF/classes/displaytag.properties"></delete>
+			<native2ascii encoding="UTF-8" src="${web.dir}/WEB-INF/classes/" dest="${out.dir}/WEB-INF/classes/" includes="*.properties"  />
+		
+			<war destfile="${build.dir}/bpm3.war" webxml="${out.dir}/WEB-INF/web.xml" encoding="UTF-8">
+				<fileset dir="${out.dir}">
+				</fileset>
+			</war>
+			<delete dir="${out.dir}"/>
+			
+	</target>  
+				
+	<target name="生成全部代码JAVADOC" description="生成全部代码JAVADOC">
+			<delete dir="${doc.dir}" excludes="*.chm"></delete>
+			<javadoc destdir="${doc.dir}" encoding="UTF-8" doctitle="BPMX3 API文档" windowtitle="BPMX3 API文档" classpathref="libRef" charset="utf-8"
+						docencoding="UTF-8">
+				<packageset dir="${src.dir}/java">
+					<include name="com/hotent/**" />		
+				</packageset>
+			</javadoc>	
+	</target>
+
+	<target name="生成Core JAVADOC" description="生成JAVADOC">
+			<delete dir="${doc.dir}" excludes="*.chm"></delete>
+			<javadoc destdir="${doc.dir}" encoding="UTF-8" doctitle="BPMX3 API文档" windowtitle="BPMX3 API文档" classpathref="libRef" charset="utf-8"
+						docencoding="UTF-8">
+				<packageset dir="${src.dir}/java">
+					<include name="com/hotent/core/**" />		
+				</packageset>
+			</javadoc>	
+	</target>
+	
+	<target name="生成WEB服务的 JAVADOC" description="生成WEB服务的 JAVADOC">
+				<delete dir="${doc.dir}" excludes="*.chm"></delete>
+				<javadoc destdir="${doc.dir}" encoding="UTF-8" doctitle="WEB服务API文档" windowtitle="WEB服务API文档" classpathref="libRef" charset="utf-8"
+							docencoding="UTF-8">
+					<packageset dir="${src.dir}/java">
+						<include name="com/hotent/platform/webservice/api/**"/>
+						<exclude name="com/hotent/platform/webservice/api/util/**"/>
+						<!--
+						<includesfile name="com/hotent/platform/webservice/api/ProcessService.java"/>
+						<includesfile name="com/hotent/platform/webservice/api/SystemResourcesService.java"/>
+						<includesfile name="com/hotent/platform/webservice/api/UserDetailsService.java"/>
+						-->
+					</packageset>
+				</javadoc>	
+	</target>
+
+	<target name="生成核心JAR" description="生成核心JAR">
+		<delete dir="build" />
+		<mkdir dir="build"/>
+		<jar destfile="build/bpmxcore.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/hotent/core/**/**.class"/>
+			</fileset>
+		</jar>	
+	</target>
+
+	<target name="生成完整JAR" description="生成完整JAR包含平台所有的代码">
+		<delete dir="build" />
+		<mkdir dir="build"/>
+		<jar destfile="build/hotent.jar">
+			<fileset dir="${classes.dir}">
+				<include name="com/hotent/**/**.class"/>
+				<include name="com/hotent/**/**.xml"/>
+			</fileset>
+		</jar>	
+	</target>
+
+	<target name="打包移动应用APK" description="打包移动应用">
+		<echo  message="---------------打包移动应用始---------------" />
+		<copy todir="${build.dir}/mobileAPK">
+			<fileset dir="${web.dir}/mobile">
+				<include name="index.html" />
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/mobileAPK/mobile/resources">
+			<fileset dir="${web.dir}/mobile/resources"/>
+		</copy>
+		<taskdef name="compress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">  
+            <classpath>
+                <path refid="libRef"/>
+            </classpath>
+        </taskdef>  
+        <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileAPK/mobile/app">  
+            <fileset dir="${web.dir}/mobile/app">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileAPK/mobile/extend">  
+            <fileset dir="${web.dir}/mobile/extend">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileAPK/mobile/locale">  
+             <fileset dir="${web.dir}/mobile/locale">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <echo  message="---------------打包移动应用结束---------------" />
+	</target>
+	
+	
+		<target name="打包移动应用CMD" description="打包移动应用">
+		<echo  message="---------------打包移动应用始---------------" />
+		<copy todir="${build.dir}/mobileCMD/mobile">
+			<fileset dir="${web.dir}/mobile">
+				<include name="index.html" />
+				<include name="package.json" />
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/mobileCMD/mobile/resources">
+			<fileset dir="${web.dir}/mobile/resources"/>
+		</copy>
+		<taskdef name="compress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">  
+            <classpath>
+                <path refid="libRef"/>
+            </classpath>
+        </taskdef>  
+      <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileCMD/mobile/app">  
+            <fileset dir="${web.dir}/mobile/app">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileCMD/mobile/extend">  
+            <fileset dir="${web.dir}/mobile/extend">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <compress linebreak="9000000" warn="false" munge="yes"    
+            preserveallsemicolons="true" outputfolder="${build.dir}/mobileCMD/mobile/locale">  
+             <fileset dir="${web.dir}/mobile/locale">
+                <include name="**/*.js"/>
+            </fileset>
+        </compress>
+        <echo  message="---------------打包移动应用结束---------------" />
+	</target>
+	
+	
+</project>
