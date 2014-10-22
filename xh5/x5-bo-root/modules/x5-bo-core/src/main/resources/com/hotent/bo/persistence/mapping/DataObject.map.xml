@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.impl.JSONDataObject">
+	<resultMap id="DataObject" type="com.hotent.bo.persistence.model.impl.JSONDataObject">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="defId" column="DEF_ID_" jdbcType="VARCHAR"/>
+		<result property="instData" column="INST_DATA_" jdbcType="CLOB"/>
+		<result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.impl.JSONDataObject">
+		INSERT INTO xbo_inst
+		(ID_,DEF_ID_,INST_DATA_,CREATE_TIME_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{defId,jdbcType=VARCHAR}, #{instData,jdbcType=CLOB}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="DataObject">
+		SELECT * FROM xbo_inst 
+		WHERE 
+		ID_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="DataObject">
+		SELECT * FROM xbo_inst
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY ID_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.impl.JSONDataObject">
+		UPDATE xbo_inst SET
+		DEF_ID_=#{defId,jdbcType=VARCHAR},
+		INST_DATA_=#{instData,jdbcType=CLOB},
+		CREATE_TIME_=#{createTime,jdbcType=TIMESTAMP}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_inst 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	
+</mapper>

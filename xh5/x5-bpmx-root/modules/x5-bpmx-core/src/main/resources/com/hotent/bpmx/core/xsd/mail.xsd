@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.jee-soft.cn/bpmnx/plugin-mail" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.jee-soft.cn/bpmnx/plugin-mail">
+	<xsd:complexType name="tMail">
+
+		<xsd:sequence>
+			<xsd:element name="from" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+			<xsd:element name="to" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="mail" type="tMail"></xsd:element>
+</xsd:schema>

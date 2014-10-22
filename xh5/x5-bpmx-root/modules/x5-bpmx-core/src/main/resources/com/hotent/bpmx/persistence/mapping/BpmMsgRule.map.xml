@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.BpmMsgRule">
+	<resultMap id="BpmMsgRule" type="com.hotent.bpmx.persistence.model.BpmMsgRule">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="configId" column="config_id_" jdbcType="VARCHAR"/>
+		<result property="procDefId" column="proc_def_id_" jdbcType="VARCHAR"/>
+		<result property="bizType" column="biz_type_" jdbcType="VARCHAR"/>
+		<result property="msgType" column="msg_type_" jdbcType="VARCHAR"/>
+		<result property="subjectRule" column="subject_rule_" jdbcType="VARCHAR"/>
+		<result property="template" column="template_" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.BpmMsgRule">
+		INSERT INTO bpm_msg_rule
+		(id_,config_id_,proc_def_id_,biz_type_,msg_type_,subject_rule_,template_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{procDefId,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{msgType,jdbcType=VARCHAR}, #{subjectRule,jdbcType=VARCHAR}, #{template,jdbcType=CLOB})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmMsgRule">
+		SELECT * FROM bpm_msg_rule 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmMsgRule">
+		SELECT * FROM bpm_msg_rule
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<select id="queryForDef" parameterType="java.util.Map" resultMap="BpmMsgRule">
+		SELECT * FROM bpm_msg_rule
+		where
+		proc_def_id_ = ${procDefId}
+		and
+		biz_type_='def';	
+	</select>		
+	
+	<select id="queryForNode" parameterType="java.util.Map" resultMap="BpmMsgRule">
+		SELECT * FROM bpm_msg_rule
+		where 
+		config_id_ = ${configId}
+		and
+		biz_type_='node'
+	</select>
+	
+	<select id="queryForMsgNode" parameterType="java.util.Map" resultMap="BpmMsgRule">
+		SELECT * FROM bpm_msg_rule
+		where 
+		config_id_ = ${configId}
+		and
+		biz_type_='msg'
+	</select>	
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.BpmMsgRule">
+		UPDATE bpm_msg_rule SET
+		config_id_=#{configId,jdbcType=VARCHAR},
+		proc_def_id_=#{procDefId,jdbcType=VARCHAR},
+		biz_type_=#{bizType,jdbcType=VARCHAR},
+		msg_type_=#{msgType,jdbcType=VARCHAR},
+		subject_rule_=#{subjectRule,jdbcType=VARCHAR},
+		template_=#{template,jdbcType=CLOB}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_msg_rule 
+		WHERE
+		id_=#{id}
+	</delete>
+
+	<delete id="removeByConfigId" parameterType="java.lang.String">
+		DELETE FROM bpm_msg_rule 
+		WHERE
+		CONFIG_ID_=#{configId}
+	</delete>
+	
+</mapper>

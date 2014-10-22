@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultAttribute">
+	<resultMap id="Attribute" type="com.hotent.org.persistence.model.DefaultAttribute">
+		<id property="attrId" column="attr_id_" jdbcType="VARCHAR" />
+		<result property="name" column="name_" jdbcType="VARCHAR" />
+		<result property="attrKey" column="attr_key_" jdbcType="VARCHAR" />
+		<result property="belongType" column="belong_type_" jdbcType="VARCHAR" />
+		<result property="dataType" column="data_type_" jdbcType="VARCHAR" />
+		<result property="desc" column="desc_" jdbcType="VARCHAR" />
+		<result property="createOrgId" column="create_org_id_" jdbcType="VARCHAR" />
+		<result property="status" column="status_" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultAttribute">
+		INSERT INTO xog_attr
+		(attr_id_,name_,attr_key_,belong_type_,data_type_,desc_,create_org_id_,status_)
+		VALUES
+		(#{attrId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{attrKey,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR},
+		#{desc,jdbcType=VARCHAR}, #{createOrgId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="get" parameterType="java.lang.String" resultMap="Attribute">
+		SELECT * FROM xog_attr
+		WHERE
+		attr_id_=#{attrId}
+	</select>
+
+	<select id="getByAttrKey" parameterType="java.lang.String" resultMap="Attribute">
+		SELECT * FROM xog_attr
+		WHERE
+		ATTR_KEY_=#{attrKey}
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultMap="Attribute">
+		SELECT * FROM xog_attr
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY attr_id_ DESC
+		</if>
+	</select>
+
+
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultAttribute">
+		UPDATE xog_attr SET
+		name_=#{name,jdbcType=VARCHAR},
+		attr_key_=#{attrKey,jdbcType=VARCHAR},
+		belong_type_=#{belongType,jdbcType=VARCHAR},
+		data_type_=#{dataType,jdbcType=VARCHAR},
+		desc_=#{desc,jdbcType=VARCHAR},
+		create_org_id_=#{createOrgId,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR}
+		WHERE
+		attr_id_=#{attrId}
+	</update>
+
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_attr
+		WHERE
+		attr_id_=#{attrId}
+	</delete>
+
+
+	<select id="queryByCriteria" parameterType="com.hotent.org.persistence.query.AttributeQuery$FindQuery" resultMap="Attribute">
+		SELECT RES.*
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql" />
+	</select>
+
+	<select id="queryCountByCriteria" parameterType="com.hotent.org.persistence.query.AttributeQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<update id="updateByUpdateQuery" parameterType="com.hotent.org.persistence.query.AttributeQuery$UpdateQuery">
+		UPDATE xog_attr RES
+		<include refid="updateDataCaluseSql" />
+		<include refid="criteriaSql" />
+	</update>
+
+
+	<delete id="deleteByDeleteQuery" parameterType="com.hotent.org.persistence.query.AttributeQuery$DeleteQuery">
+		DELETE FROM xog_attr
+		<include refid="noPrefixCriteriaSql" />
+	</delete>
+
+
+	<sql id="queryByCriteriaSql">
+		from xog_attr RES
+		<include refid="joinAttributeValueSql" />
+		<include refid="criteriaSql" />
+	</sql>
+
+	<sql id="joinAttributeValueSql">
+		<if test="joinAttributeValue">
+			INNER JOIN XOG_ATTR_VAL REL ON RES.ATTR_ID_ = REL.ATTR_ID_
+			<foreach collection="oredAttributeValueCriteria" item="criteria" open="and (" close=")" separator="or" index="idx">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and REL.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and REL.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and REL.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and REL.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</if>
+	</sql>
+	<sql id="criteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and RES.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and RES.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and RES.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="noPrefixCriteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="updateDataCaluseSql">
+		<set>
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				RES.${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	<sql id="orderByClauseSql">
+		<if test="orderByClause.valid">
+			ORDER BY
+			<foreach collection="orderByClause.orderBys" item="clause" separator=",">
+				${clause.property} ${clause.direction}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

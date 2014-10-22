@@ -1,0 +1,1156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultUser">
+	<resultMap id="User" type="com.hotent.org.persistence.model.DefaultUser">
+		<id property="userId" column="user_id_" jdbcType="VARCHAR"/>
+		<result property="account" column="account_" jdbcType="VARCHAR"/>
+		<result property="fullname" column="fullname_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="password" column="pwd_" jdbcType="VARCHAR"/>
+		<result property="sex" column="sex_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="create_by_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time_" jdbcType="TIMESTAMP"/>
+		<result property="createSaasId" column="create_saas_id_" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="update_by_" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time_" jdbcType="TIMESTAMP"/>
+		<result property="from" column="from_" jdbcType="VARCHAR"/>
+		<result property="mobile" column="mobile_" jdbcType="VARCHAR"/>
+		<result property="email" column="email_" jdbcType="VARCHAR"/>
+		<result property="address" column="address_" jdbcType="VARCHAR"/>
+		<result property="qq" column="qq_" jdbcType="VARCHAR"/>
+		<result property="phone" column="phone_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultUser">
+		INSERT INTO xog_user
+		(user_id_,account_,fullname_,status_,pwd_,sex_,create_by_,create_time_,create_saas_id_,update_by_,update_time_,from_,mobile_,email_,address_,qq_,phone_)
+		VALUES 
+		(#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createSaasId,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{from,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="User">
+		SELECT * FROM xog_user 
+		WHERE 
+		user_id_=#{userId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="User">
+		SELECT * FROM xog_user
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY user_id_ DESC
+		</if>
+	</select>
+	
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultUser">
+		UPDATE xog_user SET
+		account_=#{account,jdbcType=VARCHAR},
+		fullname_=#{fullname,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		pwd_=#{password,jdbcType=VARCHAR},
+		sex_=#{sex,jdbcType=VARCHAR},
+		create_by_=#{createBy,jdbcType=VARCHAR},
+		create_time_=#{createTime,jdbcType=TIMESTAMP},
+		create_saas_id_=#{createSaasId,jdbcType=VARCHAR},
+		update_by_=#{updateBy,jdbcType=VARCHAR},
+		update_time_=#{updateTime,jdbcType=TIMESTAMP},
+		from_=#{from,jdbcType=VARCHAR},
+		mobile_=#{mobile,jdbcType=VARCHAR},
+		email_=#{email,jdbcType=VARCHAR},
+		address_=#{address,jdbcType=VARCHAR},
+		qq_=#{qq,jdbcType=VARCHAR},
+		phone_=#{phone,jdbcType=VARCHAR}
+		WHERE
+		user_id_=#{userId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_user 
+		WHERE
+		user_id_=#{userId}
+	</delete>
+	
+	
+	<select id="getByAccount"   parameterType="java.lang.String" resultMap="User">
+		SELECT * FROM xog_user 
+		WHERE 
+		account_=#{account}
+	</select>
+	
+	
+	<select id="queryByUserRelation" parameterType="java.util.Map" resultMap="User">
+		SELECT a.* FROM xog_user a
+		WHERE a.user_id_ IN
+		(SELECT b.rel_user_id_ FROM xog_user_rel b
+		WHERE b.user_id_=#{userId}
+		AND b.rel_type_=#{relType}
+		)
+	</select>
+	
+	<select id="queryByGroupRelation" parameterType="java.util.Map" resultMap="User">
+		SELECT a.* FROM xog_user a
+		WHERE a.user_id_ IN (
+		SELECT b.user_id_ FROM xog_user_group b
+		WHERE b.group_id_=#{groupId}
+		AND b.rel_type_=#{relType}
+		)
+	</select>
+
+
+	<select id="selectUserByQueryCriteria" parameterType="com.hotent.org.persistence.query.impl.UserQueryImpl_bak" resultMap="User">
+		SELECT RES.*
+		<include refid="selectUserByQueryCriteriaSql" />
+		${orderBy}
+	</select>
+
+	<select id="selectUserCountByQueryCriteria" parameterType="com.hotent.org.persistence.query.impl.UserQueryImpl_bak" resultType="long">
+		select count(1)
+		<include refid="selectUserByQueryCriteriaSql" />
+	</select>
+	
+	<select id="queryUserByCriteria" parameterType="com.hotent.org.persistence.query.UserQuery" resultMap="User">
+		SELECT RES.*
+		<include refid="queryUserByCriteriaSql" />
+		${orderByClause}
+	</select>
+
+	<sql id="queryUserByCriteriaSql">
+		from XOG_USER RES
+		
+		<if test="groupId != null">
+			INNER JOIN XOG_USER_GROUP REL ON RES.USER_ID_ = REL.USER_ID_
+			INNER JOIN XOG_GROUP G ON REL.GROUP_ID_ = G.GROUP_ID_
+   		</if>
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="selectUserByQueryCriteriaSql">
+	from XOG_USER RES
+	<where>
+		   	<if test="userUserIdIsNull != null">
+				and RES.USER_ID_ is null
+			</if>
+		   	<if test="userUserIdIsNull != null">
+				and RES.USER_ID_ is not null
+			</if>
+
+		   	<if test="userUserIdEqualTo != null">
+				and RES.USER_ID_ = #{userUserIdEqualTo}
+			</if>
+
+		   	<if test="userUserIdNotEqualTo != null">
+				and RES.USER_ID_ != #{userUserIdNotEqualTo}
+			</if>
+
+		   	<if test="userUserIdGreaterThan != null">
+				and RES.USER_ID_ > #{userUserIdGreaterThan}
+			</if>
+
+		   	<if test="userUserIdGreaterThanOrEqualTo != null">
+				and RES.USER_ID_ >= #{userUserIdGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userUserIdLessThan != null">
+				and RES.USER_ID_ &lt; #{userUserIdLessThan}
+			</if>
+
+		   	<if test="userUserIdLessThanOrEqualTo != null">
+				and RES.USER_ID_ &lt;= #{userUserIdLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userUserIdLike != null">
+				and RES.USER_ID_ Like #{userUserIdLike}
+			</if>
+
+		   	<if test="userUserIdNotLike != null">
+				and RES.USER_ID_ Not Like #{userUserIdNotLike}
+			</if>
+
+		   	<if test="userUserIdIn != null">
+				and RES.USER_ID_ In #{userUserIdIn}
+			</if>
+
+		   	<if test="userUserIdNotIn != null">
+				and RES.USER_ID_ Not In #{userUserIdNotIn}
+			</if>
+
+		   	<if test="userUserIdBetween != null">
+				and RES.USER_ID_ Between #{userUserIdBetween}
+			</if>      
+		   	<if test="userUserIdNotBetween != null">
+				and RES.USER_ID_ not between #{userUserIdNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userAccountIsNull != null">
+				and RES.ACCOUNT_ is null
+			</if>
+		   	<if test="userAccountIsNull != null">
+				and RES.ACCOUNT_ is not null
+			</if>
+
+		   	<if test="userAccountEqualTo != null">
+				and RES.ACCOUNT_ = #{userAccountEqualTo}
+			</if>
+
+		   	<if test="userAccountNotEqualTo != null">
+				and RES.ACCOUNT_ != #{userAccountNotEqualTo}
+			</if>
+
+		   	<if test="userAccountGreaterThan != null">
+				and RES.ACCOUNT_ > #{userAccountGreaterThan}
+			</if>
+
+		   	<if test="userAccountGreaterThanOrEqualTo != null">
+				and RES.ACCOUNT_ >= #{userAccountGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userAccountLessThan != null">
+				and RES.ACCOUNT_ &lt;  #{userAccountLessThan}
+			</if>
+
+		   	<if test="userAccountLessThanOrEqualTo != null">
+				and RES.ACCOUNT_ &lt;=  #{userAccountLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userAccountLike != null">
+				and RES.ACCOUNT_ Like #{userAccountLike}
+			</if>
+
+		   	<if test="userAccountNotLike != null">
+				and RES.ACCOUNT_ Not Like #{userAccountNotLike}
+			</if>
+
+		   	<if test="userAccountIn != null">
+				and RES.ACCOUNT_ In #{userAccountIn}
+			</if>
+
+		   	<if test="userAccountNotIn != null">
+				and RES.ACCOUNT_ Not In #{userAccountNotIn}
+			</if>
+
+		   	<if test="userAccountBetween != null">
+				and RES.ACCOUNT_ Between #{userAccountBetween}
+			</if>      
+		   	<if test="userAccountNotBetween != null">
+				and RES.ACCOUNT_ not between #{userAccountNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userFullnameIsNull != null">
+				and RES.FULLNAME_ is null
+			</if>
+		   	<if test="userFullnameIsNull != null">
+				and RES.FULLNAME_ is not null
+			</if>
+
+		   	<if test="userFullnameEqualTo != null">
+				and RES.FULLNAME_ = #{userFullnameEqualTo}
+			</if>
+
+		   	<if test="userFullnameNotEqualTo != null">
+				and RES.FULLNAME_ != #{userFullnameNotEqualTo}
+			</if>
+
+		   	<if test="userFullnameGreaterThan != null">
+				and RES.FULLNAME_ > #{userFullnameGreaterThan}
+			</if>
+
+		   	<if test="userFullnameGreaterThanOrEqualTo != null">
+				and RES.FULLNAME_ >= #{userFullnameGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userFullnameLessThan != null">
+				and RES.FULLNAME_ &lt; #{userFullnameLessThan}
+			</if>
+
+		   	<if test="userFullnameLessThanOrEqualTo != null">
+				and RES.FULLNAME_ &lt;= #{userFullnameLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userFullnameLike != null">
+				and RES.FULLNAME_ Like #{userFullnameLike}
+			</if>
+
+		   	<if test="userFullnameNotLike != null">
+				and RES.FULLNAME_ Not Like #{userFullnameNotLike}
+			</if>
+
+		   	<if test="userFullnameIn != null">
+				and RES.FULLNAME_ In #{userFullnameIn}
+			</if>
+
+		   	<if test="userFullnameNotIn != null">
+				and RES.FULLNAME_ Not In #{userFullnameNotIn}
+			</if>
+
+		   	<if test="userFullnameBetween != null">
+				and RES.FULLNAME_ Between #{userFullnameBetween}
+			</if>      
+		   	<if test="userFullnameNotBetween != null">
+				and RES.FULLNAME_ not between #{userFullnameNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userStatusIsNull != null">
+				and RES.STATUS_ is null
+			</if>
+		   	<if test="userStatusIsNull != null">
+				and RES.STATUS_ is not null
+			</if>
+
+		   	<if test="userStatusEqualTo != null">
+				and RES.STATUS_ = #{userStatusEqualTo}
+			</if>
+
+		   	<if test="userStatusNotEqualTo != null">
+				and RES.STATUS_ != #{userStatusNotEqualTo}
+			</if>
+
+		   	<if test="userStatusGreaterThan != null">
+				and RES.STATUS_ > #{userStatusGreaterThan}
+			</if>
+
+		   	<if test="userStatusGreaterThanOrEqualTo != null">
+				and RES.STATUS_ >= #{userStatusGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userStatusLessThan != null">
+				and RES.STATUS_ &lt; #{userStatusLessThan}
+			</if>
+
+		   	<if test="userStatusLessThanOrEqualTo != null">
+				and RES.STATUS_ &lt;= #{userStatusLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userStatusLike != null">
+				and RES.STATUS_ Like #{userStatusLike}
+			</if>
+
+		   	<if test="userStatusNotLike != null">
+				and RES.STATUS_ Not Like #{userStatusNotLike}
+			</if>
+
+		   	<if test="userStatusIn != null">
+				and RES.STATUS_ In #{userStatusIn}
+			</if>
+
+		   	<if test="userStatusNotIn != null">
+				and RES.STATUS_ Not In #{userStatusNotIn}
+			</if>
+
+		   	<if test="userStatusBetween != null">
+				and RES.STATUS_ Between #{userStatusBetween}
+			</if>      
+		   	<if test="userStatusNotBetween != null">
+				and RES.STATUS_ not between #{userStatusNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userPasswordIsNull != null">
+				and RES.PASSWORD_ is null
+			</if>
+		   	<if test="userPasswordIsNull != null">
+				and RES.PASSWORD_ is not null
+			</if>
+
+		   	<if test="userPasswordEqualTo != null">
+				and RES.PASSWORD_ = #{userPasswordEqualTo}
+			</if>
+
+		   	<if test="userPasswordNotEqualTo != null">
+				and RES.PASSWORD_ != #{userPasswordNotEqualTo}
+			</if>
+
+		   	<if test="userPasswordGreaterThan != null">
+				and RES.PASSWORD_ > #{userPasswordGreaterThan}
+			</if>
+
+		   	<if test="userPasswordGreaterThanOrEqualTo != null">
+				and RES.PASSWORD_ >= #{userPasswordGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userPasswordLessThan != null">
+				and RES.PASSWORD_ &lt; #{userPasswordLessThan}
+			</if>
+
+		   	<if test="userPasswordLessThanOrEqualTo != null">
+				and RES.PASSWORD_ &lt;= #{userPasswordLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userPasswordLike != null">
+				and RES.PASSWORD_ Like #{userPasswordLike}
+			</if>
+
+		   	<if test="userPasswordNotLike != null">
+				and RES.PASSWORD_ Not Like #{userPasswordNotLike}
+			</if>
+
+		   	<if test="userPasswordIn != null">
+				and RES.PASSWORD_ In #{userPasswordIn}
+			</if>
+
+		   	<if test="userPasswordNotIn != null">
+				and RES.PASSWORD_ Not In #{userPasswordNotIn}
+			</if>
+
+		   	<if test="userPasswordBetween != null">
+				and RES.PASSWORD_ Between #{userPasswordBetween}
+			</if>      
+		   	<if test="userPasswordNotBetween != null">
+				and RES.PASSWORD_ not between #{userPasswordNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userSexIsNull != null">
+				and RES.SEX_ is null
+			</if>
+		   	<if test="userSexIsNull != null">
+				and RES.SEX_ is not null
+			</if>
+
+		   	<if test="userSexEqualTo != null">
+				and RES.SEX_ = #{userSexEqualTo}
+			</if>
+
+		   	<if test="userSexNotEqualTo != null">
+				and RES.SEX_ != #{userSexNotEqualTo}
+			</if>
+
+		   	<if test="userSexGreaterThan != null">
+				and RES.SEX_ > #{userSexGreaterThan}
+			</if>
+
+		   	<if test="userSexGreaterThanOrEqualTo != null">
+				and RES.SEX_ >= #{userSexGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userSexLessThan != null">
+				and RES.SEX_ &lt; #{userSexLessThan}
+			</if>
+
+		   	<if test="userSexLessThanOrEqualTo != null">
+				and RES.SEX_ &lt;= #{userSexLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userSexLike != null">
+				and RES.SEX_ Like #{userSexLike}
+			</if>
+
+		   	<if test="userSexNotLike != null">
+				and RES.SEX_ Not Like #{userSexNotLike}
+			</if>
+
+		   	<if test="userSexIn != null">
+				and RES.SEX_ In #{userSexIn}
+			</if>
+
+		   	<if test="userSexNotIn != null">
+				and RES.SEX_ Not In #{userSexNotIn}
+			</if>
+
+		   	<if test="userSexBetween != null">
+				and RES.SEX_ Between #{userSexBetween}
+			</if>      
+		   	<if test="userSexNotBetween != null">
+				and RES.SEX_ not between #{userSexNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userCreateByIsNull != null">
+				and RES.CREATE_BY_ is null
+			</if>
+		   	<if test="userCreateByIsNull != null">
+				and RES.CREATE_BY_ is not null
+			</if>
+
+		   	<if test="userCreateByEqualTo != null">
+				and RES.CREATE_BY_ = #{userCreateByEqualTo}
+			</if>
+
+		   	<if test="userCreateByNotEqualTo != null">
+				and RES.CREATE_BY_ != #{userCreateByNotEqualTo}
+			</if>
+
+		   	<if test="userCreateByGreaterThan != null">
+				and RES.CREATE_BY_ > #{userCreateByGreaterThan}
+			</if>
+
+		   	<if test="userCreateByGreaterThanOrEqualTo != null">
+				and RES.CREATE_BY_ >= #{userCreateByGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateByLessThan != null">
+				and RES.CREATE_BY_ &lt; #{userCreateByLessThan}
+			</if>
+
+		   	<if test="userCreateByLessThanOrEqualTo != null">
+				and RES.CREATE_BY_ &lt;= #{userCreateByLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateByLike != null">
+				and RES.CREATE_BY_ Like #{userCreateByLike}
+			</if>
+
+		   	<if test="userCreateByNotLike != null">
+				and RES.CREATE_BY_ Not Like #{userCreateByNotLike}
+			</if>
+
+		   	<if test="userCreateByIn != null">
+				and RES.CREATE_BY_ In #{userCreateByIn}
+			</if>
+
+		   	<if test="userCreateByNotIn != null">
+				and RES.CREATE_BY_ Not In #{userCreateByNotIn}
+			</if>
+
+		   	<if test="userCreateByBetween != null">
+				and RES.CREATE_BY_ Between #{userCreateByBetween}
+			</if>      
+		   	<if test="userCreateByNotBetween != null">
+				and RES.CREATE_BY_ not between #{userCreateByNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userCreateTimeIsNull != null">
+				and RES.CREATE_TIME_ is null
+			</if>
+		   	<if test="userCreateTimeIsNull != null">
+				and RES.CREATE_TIME_  is not null
+			</if>
+
+		   	<if test="userCreateTimeEqualTo != null">
+				and RES.CREATE_TIME_ = #{userCreateTimeEqualTo}
+			</if>
+
+
+		   	<if test="userCreateTimeGreaterThan != null">
+				and RES.CREATE_TIME_ > #{userCreateTimeGreaterThan}
+			</if>
+
+		   	<if test="userCreateTimeGreaterThanOrEqualTo != null">
+				and RES.CREATE_TIME_ >= #{userCreateTimeGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateTimeLessThan != null">
+				and RES.CREATE_TIME_ &lt; #{userCreateTimeLessThan}
+			</if>
+
+		   	<if test="userCreateTimeLessThanOrEqualTo != null">
+				and RES.CREATE_TIME_ &lt;= #{userCreateTimeLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateTimeBetween != null">
+				and RES.CREATE_TIME_ Between #{userCreateTimeBetween}
+			</if>      
+		   	<if test="userCreateTimeNotBetween != null">
+				and RES.CREATE_TIME_ not between #{userCreateTimeNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userCreateSaasIdIsNull != null">
+				and RES.CREATE_SAAS_ID_ is null
+			</if>
+		   	<if test="userCreateSaasIdIsNull != null">
+				and RES.CREATE_SAAS_ID_ is not null
+			</if>
+
+		   	<if test="userCreateSaasIdEqualTo != null">
+				and RES.CREATE_SAAS_ID_ = #{userCreateSaasIdEqualTo}
+			</if>
+
+		   	<if test="userCreateSaasIdNotEqualTo != null">
+				and RES.CREATE_SAAS_ID_ != #{userCreateSaasIdNotEqualTo}
+			</if>
+
+		   	<if test="userCreateSaasIdGreaterThan != null">
+				and RES.CREATE_SAAS_ID_ > #{userCreateSaasIdGreaterThan}
+			</if>
+
+		   	<if test="userCreateSaasIdGreaterThanOrEqualTo != null">
+				and RES.CREATE_SAAS_ID_ >= #{userCreateSaasIdGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateSaasIdLessThan != null">
+				and RES.CREATE_SAAS_ID_ &lt; #{userCreateSaasIdLessThan}
+			</if>
+
+		   	<if test="userCreateSaasIdLessThanOrEqualTo != null">
+				and RES.CREATE_SAAS_ID_ &lt;= #{userCreateSaasIdLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userCreateSaasIdLike != null">
+				and RES.CREATE_SAAS_ID_ Like #{userCreateSaasIdLike}
+			</if>
+
+		   	<if test="userCreateSaasIdNotLike != null">
+				and RES.CREATE_SAAS_ID_ Not Like #{userCreateSaasIdNotLike}
+			</if>
+
+		   	<if test="userCreateSaasIdIn != null">
+				and RES.CREATE_SAAS_ID_ In #{userCreateSaasIdIn}
+			</if>
+
+		   	<if test="userCreateSaasIdNotIn != null">
+				and RES.CREATE_SAAS_ID_ Not In #{userCreateSaasIdNotIn}
+			</if>
+
+		   	<if test="userCreateSaasIdBetween != null">
+				and RES.CREATE_SAAS_ID_ Between #{userCreateSaasIdBetween}
+			</if>      
+		   	<if test="userCreateSaasIdNotBetween != null">
+				and RES.CREATE_SAAS_ID_ not between #{userCreateSaasIdNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userUpdateByIsNull != null">
+				and RES.UPDATE_BY_ is null
+			</if>
+		   	<if test="userUpdateByIsNull != null">
+				and RES.UPDATE_BY_ is not null
+			</if>
+
+		   	<if test="userUpdateByEqualTo != null">
+				and RES.UPDATE_BY_ = #{userUpdateByEqualTo}
+			</if>
+
+		   	<if test="userUpdateByNotEqualTo != null">
+				and RES.UPDATE_BY_ != #{userUpdateByNotEqualTo}
+			</if>
+
+		   	<if test="userUpdateByGreaterThan != null">
+				and RES.UPDATE_BY_ > #{userUpdateByGreaterThan}
+			</if>
+
+		   	<if test="userUpdateByGreaterThanOrEqualTo != null">
+				and RES.UPDATE_BY_ >= #{userUpdateByGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userUpdateByLessThan != null">
+				and RES.UPDATE_BY_ &lt;  #{userUpdateByLessThan}
+			</if>
+
+		   	<if test="userUpdateByLessThanOrEqualTo != null">
+				and RES.UPDATE_BY_ &lt;=  #{userUpdateByLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userUpdateByLike != null">
+				and RES.UPDATE_BY_ Like #{userUpdateByLike}
+			</if>
+
+		   	<if test="userUpdateByNotLike != null">
+				and RES.UPDATE_BY_ Not Like #{userUpdateByNotLike}
+			</if>
+
+		   	<if test="userUpdateByIn != null">
+				and RES.UPDATE_BY_ In #{userUpdateByIn}
+			</if>
+
+		   	<if test="userUpdateByNotIn != null">
+				and RES.UPDATE_BY_ Not In #{userUpdateByNotIn}
+			</if>
+
+		   	<if test="userUpdateByBetween != null">
+				and RES.UPDATE_BY_ Between #{userUpdateByBetween}
+			</if>      
+		   	<if test="userUpdateByNotBetween != null">
+				and RES.UPDATE_BY_ not between #{userUpdateByNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userUpdateTimeIsNull != null">
+				and RES.UPDATE_TIME_ is null
+			</if>
+		   	<if test="userUpdateTimeIsNull != null">
+				and RES.UPDATE_TIME_  is not null
+			</if>
+
+		   	<if test="userUpdateTimeEqualTo != null">
+				and RES.UPDATE_TIME_ = #{userUpdateTimeEqualTo}
+			</if>
+
+
+		   	<if test="userUpdateTimeGreaterThan != null">
+				and RES.UPDATE_TIME_ > #{userUpdateTimeGreaterThan}
+			</if>
+
+		   	<if test="userUpdateTimeGreaterThanOrEqualTo != null">
+				and RES.UPDATE_TIME_ >= #{userUpdateTimeGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userUpdateTimeLessThan != null">
+				and RES.UPDATE_TIME_ &lt;  #{userUpdateTimeLessThan}
+			</if>
+
+		   	<if test="userUpdateTimeLessThanOrEqualTo != null">
+				and RES.UPDATE_TIME_ &lt;=  #{userUpdateTimeLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userUpdateTimeBetween != null">
+				and RES.UPDATE_TIME_ Between #{userUpdateTimeBetween}
+			</if>      
+		   	<if test="userUpdateTimeNotBetween != null">
+				and RES.UPDATE_TIME_ not between #{userUpdateTimeNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userFromIsNull != null">
+				and RES.FROM_ is null
+			</if>
+		   	<if test="userFromIsNull != null">
+				and RES.FROM_ is not null
+			</if>
+
+		   	<if test="userFromEqualTo != null">
+				and RES.FROM_ = #{userFromEqualTo}
+			</if>
+
+		   	<if test="userFromNotEqualTo != null">
+				and RES.FROM_ != #{userFromNotEqualTo}
+			</if>
+
+		   	<if test="userFromGreaterThan != null">
+				and RES.FROM_ > #{userFromGreaterThan}
+			</if>
+
+		   	<if test="userFromGreaterThanOrEqualTo != null">
+				and RES.FROM_ >= #{userFromGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userFromLessThan != null">
+				and RES.FROM_ &lt;  #{userFromLessThan}
+			</if>
+
+		   	<if test="userFromLessThanOrEqualTo != null">
+				and RES.FROM_ &lt;=  #{userFromLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userFromLike != null">
+				and RES.FROM_ Like #{userFromLike}
+			</if>
+
+		   	<if test="userFromNotLike != null">
+				and RES.FROM_ Not Like #{userFromNotLike}
+			</if>
+
+		   	<if test="userFromIn != null">
+				and RES.FROM_ In #{userFromIn}
+			</if>
+
+		   	<if test="userFromNotIn != null">
+				and RES.FROM_ Not In #{userFromNotIn}
+			</if>
+
+		   	<if test="userFromBetween != null">
+				and RES.FROM_ Between #{userFromBetween}
+			</if>      
+		   	<if test="userFromNotBetween != null">
+				and RES.FROM_ not between #{userFromNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userMobileIsNull != null">
+				and RES.MOBILE_ is null
+			</if>
+		   	<if test="userMobileIsNull != null">
+				and RES.MOBILE_ is not null
+			</if>
+
+		   	<if test="userMobileEqualTo != null">
+				and RES.MOBILE_ = #{userMobileEqualTo}
+			</if>
+
+		   	<if test="userMobileNotEqualTo != null">
+				and RES.MOBILE_ != #{userMobileNotEqualTo}
+			</if>
+
+		   	<if test="userMobileGreaterThan != null">
+				and RES.MOBILE_ > #{userMobileGreaterThan}
+			</if>
+
+		   	<if test="userMobileGreaterThanOrEqualTo != null">
+				and RES.MOBILE_ >= #{userMobileGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userMobileLessThan != null">
+				and RES.MOBILE_ &lt; #{userMobileLessThan}
+			</if>
+
+		   	<if test="userMobileLessThanOrEqualTo != null">
+				and RES.MOBILE_ &lt;= #{userMobileLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userMobileLike != null">
+				and RES.MOBILE_ Like #{userMobileLike}
+			</if>
+
+		   	<if test="userMobileNotLike != null">
+				and RES.MOBILE_ Not Like #{userMobileNotLike}
+			</if>
+
+		   	<if test="userMobileIn != null">
+				and RES.MOBILE_ In #{userMobileIn}
+			</if>
+
+		   	<if test="userMobileNotIn != null">
+				and RES.MOBILE_ Not In #{userMobileNotIn}
+			</if>
+
+		   	<if test="userMobileBetween != null">
+				and RES.MOBILE_ Between #{userMobileBetween}
+			</if>      
+		   	<if test="userMobileNotBetween != null">
+				and RES.MOBILE_ not between #{userMobileNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userEmailIsNull != null">
+				and RES.EMAIL_ is null
+			</if>
+		   	<if test="userEmailIsNull != null">
+				and RES.EMAIL_ is not null
+			</if>
+
+		   	<if test="userEmailEqualTo != null">
+				and RES.EMAIL_ = #{userEmailEqualTo}
+			</if>
+
+		   	<if test="userEmailNotEqualTo != null">
+				and RES.EMAIL_ != #{userEmailNotEqualTo}
+			</if>
+
+		   	<if test="userEmailGreaterThan != null">
+				and RES.EMAIL_ > #{userEmailGreaterThan}
+			</if>
+
+		   	<if test="userEmailGreaterThanOrEqualTo != null">
+				and RES.EMAIL_ >= #{userEmailGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userEmailLessThan != null">
+				and RES.EMAIL_ &lt;  #{userEmailLessThan}
+			</if>
+
+		   	<if test="userEmailLessThanOrEqualTo != null">
+				and RES.EMAIL_ &lt;=  #{userEmailLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userEmailLike != null">
+				and RES.EMAIL_ Like #{userEmailLike}
+			</if>
+
+		   	<if test="userEmailNotLike != null">
+				and RES.EMAIL_ Not Like #{userEmailNotLike}
+			</if>
+
+		   	<if test="userEmailIn != null">
+				and RES.EMAIL_ In #{userEmailIn}
+			</if>
+
+		   	<if test="userEmailNotIn != null">
+				and RES.EMAIL_ Not In #{userEmailNotIn}
+			</if>
+
+		   	<if test="userEmailBetween != null">
+				and RES.EMAIL_ Between #{userEmailBetween}
+			</if>      
+		   	<if test="userEmailNotBetween != null">
+				and RES.EMAIL_ not between #{userEmailNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userAddressIsNull != null">
+				and RES.ADDRESS_ is null
+			</if>
+		   	<if test="userAddressIsNull != null">
+				and RES.ADDRESS_ is not null
+			</if>
+
+		   	<if test="userAddressEqualTo != null">
+				and RES.ADDRESS_ = #{userAddressEqualTo}
+			</if>
+
+		   	<if test="userAddressNotEqualTo != null">
+				and RES.ADDRESS_ != #{userAddressNotEqualTo}
+			</if>
+
+		   	<if test="userAddressGreaterThan != null">
+				and RES.ADDRESS_ > #{userAddressGreaterThan}
+			</if>
+
+		   	<if test="userAddressGreaterThanOrEqualTo != null">
+				and RES.ADDRESS_ >= #{userAddressGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userAddressLessThan != null">
+				and RES.ADDRESS_ &lt;  #{userAddressLessThan}
+			</if>
+
+		   	<if test="userAddressLessThanOrEqualTo != null">
+				and RES.ADDRESS_ &lt;=  #{userAddressLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userAddressLike != null">
+				and RES.ADDRESS_ Like #{userAddressLike}
+			</if>
+
+		   	<if test="userAddressNotLike != null">
+				and RES.ADDRESS_ Not Like #{userAddressNotLike}
+			</if>
+
+		   	<if test="userAddressIn != null">
+				and RES.ADDRESS_ In #{userAddressIn}
+			</if>
+
+		   	<if test="userAddressNotIn != null">
+				and RES.ADDRESS_ Not In #{userAddressNotIn}
+			</if>
+
+		   	<if test="userAddressBetween != null">
+				and RES.ADDRESS_ Between #{userAddressBetween}
+			</if>      
+		   	<if test="userAddressNotBetween != null">
+				and RES.ADDRESS_ not between #{userAddressNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userQqIsNull != null">
+				and RES.QQ_ is null
+			</if>
+		   	<if test="userQqIsNull != null">
+				and RES.QQ_ is not null
+			</if>
+
+		   	<if test="userQqEqualTo != null">
+				and RES.QQ_ = #{userQqEqualTo}
+			</if>
+
+		   	<if test="userQqNotEqualTo != null">
+				and RES.QQ_ != #{userQqNotEqualTo}
+			</if>
+
+		   	<if test="userQqGreaterThan != null">
+				and RES.QQ_ > #{userQqGreaterThan}
+			</if>
+
+		   	<if test="userQqGreaterThanOrEqualTo != null">
+				and RES.QQ_ >= #{userQqGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userQqLessThan != null">
+				and RES.QQ_ &lt;  #{userQqLessThan}
+			</if>
+
+		   	<if test="userQqLessThanOrEqualTo != null">
+				and RES.QQ_ &lt;=  #{userQqLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userQqLike != null">
+				and RES.QQ_ Like #{userQqLike}
+			</if>
+
+		   	<if test="userQqNotLike != null">
+				and RES.QQ_ Not Like #{userQqNotLike}
+			</if>
+
+		   	<if test="userQqIn != null">
+				and RES.QQ_ In #{userQqIn}
+			</if>
+
+		   	<if test="userQqNotIn != null">
+				and RES.QQ_ Not In #{userQqNotIn}
+			</if>
+
+		   	<if test="userQqBetween != null">
+				and RES.QQ_ Between #{userQqBetween}
+			</if>      
+		   	<if test="userQqNotBetween != null">
+				and RES.QQ_ not between #{userQqNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userPhoneIsNull != null">
+				and RES.PHONE_ is null
+			</if>
+		   	<if test="userPhoneIsNull != null">
+				and RES.PHONE_ is not null
+			</if>
+
+		   	<if test="userPhoneEqualTo != null">
+				and RES.PHONE_ = #{userPhoneEqualTo}
+			</if>
+
+		   	<if test="userPhoneNotEqualTo != null">
+				and RES.PHONE_ != #{userPhoneNotEqualTo}
+			</if>
+
+		   	<if test="userPhoneGreaterThan != null">
+				and RES.PHONE_ > #{userPhoneGreaterThan}
+			</if>
+
+		   	<if test="userPhoneGreaterThanOrEqualTo != null">
+				and RES.PHONE_ >= #{userPhoneGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userPhoneLessThan != null">
+				and RES.PHONE_ &lt;  #{userPhoneLessThan}
+			</if>
+
+		   	<if test="userPhoneLessThanOrEqualTo != null">
+				and RES.PHONE_ &lt;=  #{userPhoneLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userPhoneLike != null">
+				and RES.PHONE_ Like #{userPhoneLike}
+			</if>
+
+		   	<if test="userPhoneNotLike != null">
+				and RES.PHONE_ Not Like #{userPhoneNotLike}
+			</if>
+
+		   	<if test="userPhoneIn != null">
+				and RES.PHONE_ In #{userPhoneIn}
+			</if>
+
+		   	<if test="userPhoneNotIn != null">
+				and RES.PHONE_ Not In #{userPhoneNotIn}
+			</if>
+
+		   	<if test="userPhoneBetween != null">
+				and RES.PHONE_ Between #{userPhoneBetween}
+			</if>      
+		   	<if test="userPhoneNotBetween != null">
+				and RES.PHONE_ not between #{userPhoneNotBetween}
+			</if>
+
+		     
+		
+	
+		   	<if test="userUserRelationListIsNull != null">
+				and RES.USER_RELATION_LIST_ is null
+			</if>
+		   	<if test="userUserRelationListIsNull != null">
+				and RES.USER_RELATION_LIST_ is not null
+			</if>
+
+		   	<if test="userUserRelationListEqualTo != null">
+				and RES.USER_RELATION_LIST_ = #{userUserRelationListEqualTo}
+			</if>
+
+		   	<if test="userUserRelationListNotEqualTo != null">
+				and RES.USER_RELATION_LIST_ != #{userUserRelationListNotEqualTo}
+			</if>
+
+		   	<if test="userUserRelationListGreaterThan != null">
+				and RES.USER_RELATION_LIST_ > #{userUserRelationListGreaterThan}
+			</if>
+
+		   	<if test="userUserRelationListGreaterThanOrEqualTo != null">
+				and RES.USER_RELATION_LIST_ >= #{userUserRelationListGreaterThanOrEqualTo}
+			</if>
+
+		   	<if test="userUserRelationListLessThan != null">
+				and RES.USER_RELATION_LIST_ &lt;  #{userUserRelationListLessThan}
+			</if>
+
+		   	<if test="userUserRelationListLessThanOrEqualTo != null">
+				and RES.USER_RELATION_LIST_ &lt;=  #{userUserRelationListLessThanOrEqualTo}
+			</if>
+
+		   	<if test="userUserRelationListLike != null">
+				and RES.USER_RELATION_LIST_ Like #{userUserRelationListLike}
+			</if>
+
+		   	<if test="userUserRelationListNotLike != null">
+				and RES.USER_RELATION_LIST_ Not Like #{userUserRelationListNotLike}
+			</if>
+
+		   	<if test="userUserRelationListIn != null">
+				and RES.USER_RELATION_LIST_ In #{userUserRelationListIn}
+			</if>
+
+		   	<if test="userUserRelationListNotIn != null">
+				and RES.USER_RELATION_LIST_ Not In #{userUserRelationListNotIn}
+			</if>
+
+		   	<if test="userUserRelationListBetween != null">
+				and RES.USER_RELATION_LIST_ Between #{userUserRelationListBetween}
+			</if>      
+		   	<if test="userUserRelationListNotBetween != null">
+				and RES.USER_RELATION_LIST_ not between #{userUserRelationListNotBetween}
+			</if>
+
+		     
+		
+	
+		     
+	</where>
+</sql>
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.jee-soft.cn/bpmnx/plugin-assign-user" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.jee-soft.cn/bpmnx/plugin-assign-user">
+	<xsd:complexType name="tAssignUser">
+		<xsd:attribute name="id"></xsd:attribute>
+		<xsd:attribute name="name"></xsd:attribute>
+		<xsd:sequence>
+			<xsd:element name="users" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="assign-user" type="tAssignUser"></xsd:element>
+</xsd:schema>

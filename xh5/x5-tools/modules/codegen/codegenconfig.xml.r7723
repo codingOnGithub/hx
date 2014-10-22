@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="codegen.xsd">
+	<variables>
+		<variable name="developer" value="zyp" />
+		<variable name="company" value="广州宏天软件有限公司" />
+	</variables>
+	
+	<templates>
+		<template id="entity" path="entity.ftl"/>
+		<template id="dao" path="dao.ftl"/>
+		<template id="daoImpl" path="daoImpl.ftl"/>
+		<template id="manager"  path="manager.ftl"/>
+		<template id="managerImpl"  path="managerImpl.ftl"/>
+		<template id="daoTest"  path="daoTest.ftl"/>
+		<template id="baseTest"  path="baseTest.ftl"/>
+		<template id="managerTest"  path="managerTest.ftl"/>
+		<template id="mapping"  path="mapping.ftl"/>
+	</templates>
+	
+	<files baseDir="H:\workspace-x5\x5-bpmx-root\modules\x5-bpmx-core" >
+		<file refTemplate="mapping" filename="{class}.map.xml" dir="src\main\resources\com\hotent\{system}\{package}\mapping"  sub="true"  override="true"/>
+		<file refTemplate="entity" filename="{class}.java" dir="src\main\java\com\hotent\{system}\{package}\model"  sub="true" override="true"/>
+		<file refTemplate="dao" filename="{class}Dao.java" dir="src\main\java\com\hotent\{system}\{package}\dao" sub="true"  override="true"/>
+		<file refTemplate="daoImpl" filename="{class}DaoImpl.java" dir="src\main\java\com\hotent\{system}\{package}\dao\impl" sub="true"  override="true"/>
+		<file refTemplate="manager" filename="{class}Manager.java" dir="src\main\java\com\hotent\{system}\{package}\manager" sub="false"  override="true"/>
+		<file refTemplate="managerImpl" filename="{class}ManagerImpl.java" dir="src\main\java\com\hotent\{system}\{package}\manager\impl" sub="false"  override="true"/>
+		<file refTemplate="daoTest" filename="{class}DaoTest.java" dir="src\test\java\com\hotent\{system}\{package}\dao" sub="false"  override="true"/>
+		<file refTemplate="managerTest" filename="{class}ManagerTest.java" dir="src\test\java\com\hotent\{system}\{package}\manager" sub="false"  override="true"/>
+		<!-- 
+		<file refTemplate="baseTest" filename="{baseClass}BaseTest.java" dir="src\test\java\com\hotent\{system}\{package}" sub="false"  override="true"/>
+		 -->
+	</files>
+	
+	<table tableName="bpm_ws_node" >
+		<variable name="class" value="BpmWsNode" />
+		<variable name="package" value="persistence" />
+		<variable name="baseClass" value="Bpmx" /> 		
+		<subtable tablename="bpm_ws_node_params" foreignKey="ws_node_id_">
+			<variable name="class" value="BpmWsNodeParams"/>
+			<variable name="package" value="persistence"/>
+			<variable name="baseClass" value="Bpmx" />
+		</subtable>			
+	</table>
+	<!-- 	
+	<table tableName="bpm_node_config" >
+		<variable name="class" value="DefaultBpmNodeConfig" />
+		<variable name="package" value="persistence" />
+		<variable name="baseClass" value="Bpmx" /> 			
+	</table>	
+	<table tableName="bpm_definition" >
+		<variable name="class" value="DefaultBpmDefinition" />
+		<variable name="package" value="core" />
+		<variable name="baseClass" value="Bpmx" />
+	</table>		
+	<table tableName="bpm_def_data" >
+		<variable name="class" value="BpmDefData" />
+		<variable name="package" value="core" />
+		<variable name="baseClass" value="Bpmx" />
+	</table>	
+	<table tableName="bpm_def_config" >
+		<variable name="class" value="BpmDefConfig" />
+		<variable name="package" value="core" />
+		<variable name="baseClass" value="Bpmx" />
+	</table>	
+
+	<table tableName="bpm_node_config_data" >
+		<variable name="class" value="BpmNodeConfigData" />
+		<variable name="package" value="core" />
+		<variable name="baseClass" value="Bpmx" />
+	</table>
+			 
+	<table tableName="bpm_user_node" >
+		<variable name="class" value="BpmUserNode" />
+		<variable name="package" value="core" />
+		<variable name="baseClass" value="Bpmx" />
+	</table>			 		 		 
+	-->
+	<!--生成工作流的配置
+	<table tableName="ERP_PUR_ORDER" >
+		<variable name="class" value="PurOrder" />
+		<variable name="package" value="code" />
+		
+		<subtable tablename="ERP_PUR_DETAIL" foreignKey="ORDER_ID">
+			<variable name="class" value="PurDetail"/>
+			<variable name="package" value="code"/>
+		</subtable>
+	</table>
+	<variable name="classVar" value="purOrder"/>
+		<variable name="path" value="code" />
+			<variable name="classVar" value="purDetail"/>
+			<variable name="path" value="code" />
+	-->
+
+</config>

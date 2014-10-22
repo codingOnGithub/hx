@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ksoft.com/service/group/manager"
+ xmlns:tns="http://www.ksoft.com/service/group/manager" elementFormDefault="qualified">
+ 
+ 	<element name="servicegroupcfg" type="tns:servicegroupcfg"></element>
+ 	
+ 	<complexType name="servicegroup">
+		<attribute name="sn" type="string" use="required"></attribute>
+		<attribute name="hostname" type="string" use="required"></attribute>
+		<attribute name="port" type="int"></attribute>
+		<attribute name="groupno" type="string" use="required"></attribute>
+		<attribute name="description" type="string" use="required"></attribute>
+		<attribute name="createby" type="string" use="required"></attribute>
+		<attribute name="updateby" type="string"></attribute>
+		<attribute name="createdate" type="string" use="required"></attribute>
+		<attribute name="disabled" type="int" use="required"></attribute>
+		<attribute name="updatedate" type="string"></attribute>
+		<attribute name="remark" type="string" ></attribute>
+	</complexType>
+	
+	<complexType name="servicegroupcfg">
+		<sequence>
+			<element name="servicegrouplist" type="tns:servicegrouplist"
+				minOccurs="0" maxOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="servicegrouplist">
+		<sequence>
+			<element name="servicegroup" type="tns:servicegroup"
+				minOccurs="0" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+</schema>

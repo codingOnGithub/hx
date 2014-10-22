@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>x5-bpmx-parent</artifactId>
+    <groupId>com.hotent.bpmx</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../x5-bpmx-parent/pom.xml</relativePath>
+  </parent>
+	<artifactId>x5-bpmx-activiti</artifactId>
+	<description>流程引擎Activiti框架实现</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-db</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.bpmx</groupId>
+			<artifactId>x5-bpmx-native-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.bpmx</groupId>
+			<artifactId>x5-bpmx-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>5.14</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>5.14</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		
+		
+	</dependencies>
+	
+</project>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.BOPackage">
+	<resultMap id="BOPackage" type="com.hotent.bo.persistence.model.BOPackage">
+		<id property="packageId" column="PACKAGE_ID_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="path" column="PATH_" jdbcType="VARCHAR"/>
+		<result property="depth" column="DEPTH_" jdbcType="NUMERIC"/>
+		<result property="desc" column="DESC_" jdbcType="VARCHAR"/>
+		<result property="parentId" column="PARENT_ID_" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="CREATE_BY_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<sql id="columns">
+		PACKAGE_ID_,NAME_,PATH_,DEPTH_,DESC_,PARENT_ID_,STATUS_,CREATE_BY_,CREATE_TIME_
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="packageId!=null"> AND PACKAGE_ID_ =#{packageId} </if>
+			<if test="name!=null"> AND NAME_ =#{name}  </if>
+			<if test="path!=null"> AND PATH_ =#{path}  </if>
+			<if test="depth!=null"> AND DEPTH_ =#{depth}  </if>
+			<if test="desc!=null"> AND DESC_ LIKE #{desc}  </if>
+			<if test="parentId!=null"> AND PARENT_ID_ =#{parentId} </if>
+			<if test="status!=null"> AND STATUS_ LIKE #{status}  </if>
+			<if test="createBy!=null"> AND CREATE_BY_ =#{createBy}  </if>
+			<if test="createTime!=null"> AND CREATE_TIME_ =#{createTime}  </if>
+		</where>
+	</sql>
+	
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.BOPackage">
+		INSERT INTO xbo_package
+		(PACKAGE_ID_,NAME_,PATH_,DEPTH_,DESC_,PARENT_ID_,STATUS_,CREATE_BY_,CREATE_TIME_)
+		VALUES 
+		(#{packageId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{depth,jdbcType=NUMERIC}, #{desc,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BOPackage">
+		SELECT * FROM xbo_package 
+		WHERE 
+		PACKAGE_ID_=#{packageId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BOPackage">
+		SELECT * FROM xbo_package 
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY PACKAGE_ID_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.BOPackage">
+		UPDATE xbo_package SET
+		NAME_=#{name,jdbcType=VARCHAR},
+		PATH_=#{path,jdbcType=VARCHAR},
+		DEPTH_=#{depth,jdbcType=NUMERIC},
+		DESC_=#{desc,jdbcType=VARCHAR},
+		PARENT_ID_=#{parentId,jdbcType=VARCHAR},
+		STATUS_=#{status,jdbcType=VARCHAR},
+		CREATE_BY_=#{createBy,jdbcType=VARCHAR},
+		CREATE_TIME_=#{createTime,jdbcType=TIMESTAMP}
+		WHERE
+		PACKAGE_ID_=#{packageId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_package 
+		WHERE
+		PACKAGE_ID_=#{packageId}
+	</delete>
+	
+	
+	<select id="getBOPackageByMap" parameterType="java.util.Map" resultMap="BOPackage">
+		SELECT  
+		   <include refid="columns"/> 
+		        FROM xbo_package 
+		             <include refid="dynamicWhere" />
+	</select>
+	
+	
+	
+</mapper>

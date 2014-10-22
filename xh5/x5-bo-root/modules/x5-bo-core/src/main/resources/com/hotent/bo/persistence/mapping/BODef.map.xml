@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.BODef">
+	<resultMap id="BODef" type="com.hotent.bo.persistence.model.BODef">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="packageId" column="PACKAGE_ID_" jdbcType="VARCHAR"/>
+		<result property="code" column="CODE_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="desc" column="DESC_" jdbcType="VARCHAR"/>
+		<result property="packagePath" column="PACKAGE_" jdbcType="VARCHAR"/>
+		<result property="version" column="VERSION_" jdbcType="NUMERIC"/>
+		<result property="isMain" column="IS_MAIN" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="CREATE_BY_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>
+		<result property="isMaster" column="IS_MASTER_" jdbcType="VARCHAR"/>
+		<result property="dataType" column="DATA_TYPE_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.BODef">
+		INSERT INTO xbo_def
+		(ID_,PACKAGE_ID_,CODE_,NAME_,DESC_,PACKAGE_,VERSION_,IS_MAIN,STATUS_,CREATE_BY_,CREATE_TIME_,IS_MASTER_,DATA_TYPE_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{packageId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{packagePath,jdbcType=VARCHAR}, #{version,jdbcType=NUMERIC}, #{isMain,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{isMaster,jdbcType=VARCHAR},#{dataType,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BODef">
+		SELECT * FROM xbo_def 
+		WHERE 
+		ID_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BODef">
+		SELECT * FROM xbo_def
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY ID_ DESC
+		</if>
+	</select>
+	
+	<select id="getMaxVersionBODef" parameterType="java.util.Map" resultMap="BODef">
+		SELECT * FROM xbo_def 
+				WHERE VERSION_ = (SELECT MAX(VERSION_) FROM xbo_def WHERE CODE_=#{code}) 
+				and CODE_ = #{code} 
+				and IS_MASTER_ ='Y'
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.BODef">
+		UPDATE xbo_def SET
+			PACKAGE_ID_=#{packageId,jdbcType=VARCHAR},
+			CODE_=#{code,jdbcType=VARCHAR},
+			NAME_=#{name,jdbcType=VARCHAR},
+			DESC_=#{desc,jdbcType=VARCHAR},
+			PACKAGE_=#{packagePath,jdbcType=VARCHAR},
+			VERSION_=#{version,jdbcType=NUMERIC},
+			IS_MAIN=#{isMain,jdbcType=VARCHAR},
+			STATUS_=#{status,jdbcType=VARCHAR},
+			CREATE_BY_=#{createBy,jdbcType=VARCHAR},
+			CREATE_TIME_=#{createTime,jdbcType=TIMESTAMP},
+			IS_MASTER_=#{isMaster,jdbcType=VARCHAR},
+			DATA_TYPE_=#{dataType,jdbcType=VARCHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_def 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	
+	<update id="updateBoDefsIsMain" parameterType="java.util.Map" >
+		UPDATE xbo_def SET IS_MAIN=#{isMain}  WHERE  CODE_=#{code}
+	</update>
+	
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.DefaultBpmUserNode">
+	<resultMap id="BpmUserNode" type="com.hotent.bpmx.persistence.model.DefaultBpmUserNode" extends="com.hotent.bpmx.persistence.model.DefaultBpmNodeConfig.DefaultBpmNodeConfig">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="bizType" column="biz_type_" jdbcType="VARCHAR"/>
+		<result property="isAllowBack" column="is_allow_back_" jdbcType="VARCHAR"/>
+		<result property="isAllowBackToStart" column="is_allow_back_to_start_" jdbcType="VARCHAR"/>
+		<result property="isHideOpinionField" column="is_hide_opinion_field_" jdbcType="VARCHAR"/>
+		<result property="isHideExecPath" column="is_hide_exec_path_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmUserNode">
+		INSERT INTO bpm_user_node
+		(id_,biz_type_,is_allow_back_,is_allow_back_to_start_,is_hide_opinion_field_,is_hide_exec_path_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{isAllowBack,jdbcType=VARCHAR}, #{isAllowBackToStart,jdbcType=VARCHAR}, #{isHideOpinionField,jdbcType=VARCHAR}, #{isHideExecPath,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmUserNode">
+		SELECT user.*,config.* FROM bpm_user_node user,bpm_node_config config
+		WHERE 
+		user.id_=#{id} and config.config_id_=#{id}
+	</select>	
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmUserNode">
+		SELECT user.*,config.* FROM bpm_user_node user,bpm_node_config config
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY user.id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmUserNode">
+		UPDATE bpm_user_node SET
+		biz_type_=#{bizType,jdbcType=VARCHAR},
+		is_allow_back_=#{isAllowBack,jdbcType=VARCHAR},
+		is_allow_back_to_start_=#{isAllowBackToStart,jdbcType=VARCHAR},
+		is_hide_opinion_field_=#{isHideOpinionField,jdbcType=VARCHAR},
+		is_hide_exec_path_=#{isHideExecPath,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_user_node 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	
+</mapper>

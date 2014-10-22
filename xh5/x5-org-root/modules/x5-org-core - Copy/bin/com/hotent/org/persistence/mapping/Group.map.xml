@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultGroup">
+	<resultMap id="Group" type="com.hotent.org.persistence.model.DefaultGroup">
+		<id property="groupId" column="group_id_" jdbcType="VARCHAR"/>
+		<result property="name" column="name_" jdbcType="VARCHAR"/>
+		<result property="key" column="key_" jdbcType="VARCHAR"/>
+		<result property="dimKey" column="dim_key_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="type" column="type_" jdbcType="VARCHAR"/>
+		<result property="desc" column="desc_" jdbcType="VARCHAR"/>
+		<result property="sn" column="sn_" jdbcType="NUMERIC"/>
+		<result property="isDeleted" column="is_deleted" jdbcType="VARCHAR"/>
+		<result property="parentId" column="parent_id_" jdbcType="VARCHAR"/>
+		<result property="depth" column="depth_" jdbcType="NUMERIC"/>
+		<result property="path" column="path_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="create_by_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time_" jdbcType="DATE"/>
+		<result property="createOrgId" column="create_org_id_" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="update_by_" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time_" jdbcType="DATE"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultGroup">
+		INSERT INTO xog_group
+		(group_id_,name_,key_,dim_key_,status_,type_,desc_,sn_,is_deleted,parent_id_,depth_,path_,create_by_,create_time_,create_org_id_,update_by_,update_time_)
+		VALUES 
+		(#{groupId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{dimKey,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{sn,jdbcType=NUMERIC}, #{isDeleted,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{depth,jdbcType=NUMERIC}, #{path,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createOrgId,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="Group">
+		SELECT * FROM xog_group 
+		WHERE 
+		group_id_=#{groupId}
+	</select>
+	
+	<select id="getByGroupKey"   parameterType="java.lang.String" resultMap="Group">
+		SELECT * FROM xog_group 
+		WHERE 
+		key_=#{groupKey}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="Group">
+		SELECT * FROM xog_group
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY group_id_ DESC
+		</if>
+	</select>
+	
+	<select id="queryByDimId"   parameterType="java.lang.String" resultMap="Group">
+		SELECT *
+  		FROM xog_group t
+ 		WHERE t.dim_key_ =
+        (SELECT b.dim_key_ FROM xog_dimension b WHERE b. dim_id_ =#{dimId})
+	</select>
+	
+	<select id="queryByUserId"   parameterType="java.lang.String" resultMap="Group">
+		SELECT *
+  		FROM xog_group t
+ 		WHERE t.GROUP_ID_ in
+       (select b.GROUP_ID_ from xog_user_group b where b.USER_ID_ =#{userId} and b.IS_ENABLED=#{isEnabled})
+	</select>
+	
+	<select id="queryByGroupRelation" parameterType="java.lang.String" resultMap="Group">
+		SELECT * FROM xog_group t
+		WHERE t.GROUP_ID_ in
+		(select b.GROUP_ID_ from xog_group_rel b where b.group_id_ =#{groupId} and b.rel_type_=#{relType})
+	</select>
+	
+	<select id="queryByUserRelation" parameterType="java.lang.String" resultMap="Group">
+		SELECT * FROM xog_group t
+		WHERE t.GROUP_ID_ IN
+		(select b.GROUP_ID_ from xog_user_group b where b.user_id_ =#{userId} 
+		and b.rel_type_=#{relType})
+	</select>
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultGroup">
+		UPDATE xog_group SET
+		name_=#{name,jdbcType=VARCHAR},
+		key_=#{key,jdbcType=VARCHAR},
+		dim_key_=#{dimKey,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		type_=#{type,jdbcType=VARCHAR},
+		desc_=#{desc,jdbcType=VARCHAR},
+		sn_=#{sn,jdbcType=NUMERIC},
+		is_deleted=#{isDeleted,jdbcType=VARCHAR},
+		parent_id_=#{parentId,jdbcType=VARCHAR},
+		depth_=#{depth,jdbcType=NUMERIC},
+		path_=#{path,jdbcType=VARCHAR},
+		create_by_=#{createBy,jdbcType=VARCHAR},
+		create_time_=#{createTime,jdbcType=DATE},
+		create_org_id_=#{createOrgId,jdbcType=VARCHAR},
+		update_by_=#{updateBy,jdbcType=VARCHAR},
+		update_time_=#{updateTime,jdbcType=DATE}
+		WHERE
+		group_id_=#{groupId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_group 
+		WHERE
+		group_id_=#{groupId}
+	</delete>
+	
+	<delete id="removeByGroupKey" parameterType="java.lang.String">
+		DELETE FROM xog_group 
+		WHERE
+		key_=#{groupKey}
+	</delete>
+</mapper>

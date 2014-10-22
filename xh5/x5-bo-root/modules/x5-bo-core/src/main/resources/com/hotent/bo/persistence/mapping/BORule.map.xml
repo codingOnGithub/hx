@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.BORule">
+	<resultMap id="BORule" type="com.hotent.bo.persistence.model.BORule">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="defId" column="DEF_ID_" jdbcType="VARCHAR"/>
+		<result property="attrId" column="ATTR_ID_" jdbcType="VARCHAR"/>
+		<result property="belongType" column="BELONG_TYPE_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="ruleType" column="RULE_TYPE_" jdbcType="VARCHAR"/>
+		<result property="content" column="CONTENT_" jdbcType="VARCHAR"/>
+		<result property="tipInfo" column="TIP_INFO_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+		ID_,DEF_ID_,ATTR_ID_,BELONG_TYPE_,NAME_,RULE_TYPE_,CONTENT_,TIP_INFO_
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id!=null"> AND ID_ =#{id} </if>
+			<if test="defId!=null"> AND DEF_ID_ =#{defId}  </if>
+			<if test="attrId!=null"> AND ATTR_ID_ = #{attrId} </if>
+			<if test="belongType!=null"> AND BELONG_TYPE_ =#{belongType}  </if>
+			<if test="name!=null"> AND NAME_ LIKE #{name}  </if>
+			<if test="ruleType!=null"> AND RULE_TYPE_ =#{ruleType} </if>
+			<if test="content!=null"> AND CONTENT_ LIKE #{content}  </if>
+			<if test="tipInfo!=null"> AND TIP_INFO_ LIKE #{tipInfo}  </if>
+		</where>
+	</sql>
+	
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.BORule">
+		INSERT INTO xbo_rule
+		(ID_,DEF_ID_,ATTR_ID_,BELONG_TYPE_,NAME_,RULE_TYPE_,CONTENT_,TIP_INFO_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{defId,jdbcType=VARCHAR}, #{attrId,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ruleType,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{tipInfo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BORule">
+		SELECT * FROM xbo_rule 
+		WHERE 
+		ID_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BORule">
+		SELECT * FROM xbo_rule
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY ID_ DESC
+		</if>
+	</select>
+	
+	<select id="getByAttributeId" parameterType="java.lang.String" resultMap="BORule">
+		select * from xbo_rule 
+		where ID_ in (select RULE_ID_ from xbo_rule_ref where ATTR_ID_=#{attributeId})
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.BORule">
+		UPDATE xbo_rule SET
+		DEF_ID_=#{defId,jdbcType=VARCHAR},
+		ATTR_ID_=#{attrId,jdbcType=VARCHAR},
+		BELONG_TYPE_=#{belongType,jdbcType=VARCHAR},
+		NAME_=#{name,jdbcType=VARCHAR},
+		RULE_TYPE_=#{ruleType,jdbcType=VARCHAR},
+		CONTENT_=#{content,jdbcType=VARCHAR},
+		TIP_INFO_=#{tipInfo,jdbcType=VARCHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_rule 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	
+	<select id="getRules" parameterType="java.util.Map" resultMap="BORule">
+		SELECT  
+		   <include refid="columns"/> 
+		        FROM xbo_rule 
+		             <include refid="dynamicWhere" />
+	</select>
+	
+	<select id="getRulesByAttrId" parameterType="java.util.Map" resultMap="BORule">
+		SELECT  ru.*  FROM xbo_rule ru,xbo_rule_ref ref where ru.id_ = ref.rule_id_  and ref.attr_id_ = #{attrId}
+	</select>
+	
+	<delete id="removeRules" parameterType="java.lang.String">
+		DELETE FROM xbo_rule 
+				<include refid="dynamicWhere" />
+	</delete>
+	
+</mapper>

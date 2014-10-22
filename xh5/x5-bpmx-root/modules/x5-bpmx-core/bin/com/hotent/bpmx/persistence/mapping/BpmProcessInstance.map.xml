@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.DefaultBpmProcessInstance">
+	<resultMap id="DefaultBpmProcessInstance" type="com.hotent.bpmx.persistence.model.DefaultBpmProcessInstance">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="subject" column="subject_" jdbcType="VARCHAR"/>
+		<result property="procDefId" column="proc_def_id_" jdbcType="VARCHAR"/>
+		<result property="bpmnDefId" column="bpmn_def_id_" jdbcType="VARCHAR"/>
+		<result property="procDefKey" column="proc_def_key_" jdbcType="VARCHAR"/>
+		<result property="procDefName" column="proc_def_name_" jdbcType="VARCHAR"/>
+		<result property="bizKey" column="biz_key_" jdbcType="VARCHAR"/>
+		<result property="formKey" column="form_key_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="endTime" column="end_time_" jdbcType="DATE"/>
+		<result property="duration" column="duration_" jdbcType="NUMERIC"/>
+		<result property="typeId" column="type_id_" jdbcType="VARCHAR"/>
+		<result property="resultType" column="result_type_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="create_by_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time_" jdbcType="DATE"/>
+		<result property="createOrgId" column="create_org_id_" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="update_by_" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time_" jdbcType="DATE"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmProcessInstance">
+		INSERT INTO bpm_process_inst
+		(id_,subject_,proc_def_id_,bpmn_def_id_,proc_def_key_,proc_def_name_,biz_key_,form_key_,status_,end_time_,duration_,type_id_,result_type_,create_by_,create_time_,create_org_id_,update_by_,update_time_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{procDefId,jdbcType=VARCHAR}, #{bpmnDefId,jdbcType=VARCHAR}, #{procDefKey,jdbcType=VARCHAR}, #{procDefName,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, #{formKey,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{endTime,jdbcType=DATE}, #{duration,jdbcType=NUMERIC}, #{typeId,jdbcType=VARCHAR}, #{resultType,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createOrgId,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="DefaultBpmProcessInstance">
+		SELECT * FROM bpm_process_inst 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="DefaultBpmProcessInstance">
+		SELECT * FROM bpm_process_inst
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmProcessInstance">
+		UPDATE bpm_process_inst SET
+		subject_=#{subject,jdbcType=VARCHAR},
+		proc_def_id_=#{procDefId,jdbcType=VARCHAR},
+		bpmn_def_id_=#{bpmnDefId,jdbcType=VARCHAR},
+		proc_def_key_=#{procDefKey,jdbcType=VARCHAR},
+		proc_def_name_=#{procDefName,jdbcType=VARCHAR},
+		biz_key_=#{bizKey,jdbcType=VARCHAR},
+		form_key_=#{formKey,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		end_time_=#{endTime,jdbcType=DATE},
+		duration_=#{duration,jdbcType=NUMERIC},
+		type_id_=#{typeId,jdbcType=VARCHAR},
+		result_type_=#{resultType,jdbcType=VARCHAR},
+		create_by_=#{createBy,jdbcType=VARCHAR},
+		create_time_=#{createTime,jdbcType=DATE},
+		create_org_id_=#{createOrgId,jdbcType=VARCHAR},
+		update_by_=#{updateBy,jdbcType=VARCHAR},
+		update_time_=#{updateTime,jdbcType=DATE}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_process_inst 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	
+</mapper>

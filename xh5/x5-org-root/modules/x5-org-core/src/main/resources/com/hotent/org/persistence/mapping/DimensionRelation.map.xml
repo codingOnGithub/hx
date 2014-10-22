@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultDimensionRelation">
+	<resultMap id="DimensionRelation" type="com.hotent.org.persistence.model.DefaultDimensionRelation">
+		<id property="id" column="id_" jdbcType="VARCHAR" />
+		<result property="dimId" column="dim_id_" jdbcType="VARCHAR" />
+		<result property="relDimId" column="rel_dim_id_" jdbcType="VARCHAR" />
+		<result property="relType" column="rel_type_" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultDimensionRelation">
+		INSERT INTO XOG_DIM_REL
+		(id_,dim_id_,rel_dim_id_,rel_type_)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{dimId,jdbcType=VARCHAR}, #{relDimId,jdbcType=VARCHAR}, #{relType,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="get" parameterType="java.lang.String" resultMap="DimensionRelation">
+		SELECT * FROM XOG_DIM_REL
+		WHERE
+		id_=#{id}
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultMap="DimensionRelation">
+		SELECT * FROM XOG_DIM_REL
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultDimensionRelation">
+		UPDATE XOG_DIM_REL SET
+		dim_id_=#{dimId,jdbcType=VARCHAR},
+		rel_dim_id_=#{relDimId,jdbcType=VARCHAR},
+		rel_type_=#{relType,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM XOG_DIM_REL
+		WHERE
+		id_=#{id}
+	</delete>
+
+	<delete id="delByMainId">
+		DELETE FROM XOG_DIM_REL
+		WHERE
+		DIM_ID_=#{dimId}
+	</delete>
+
+	<select id="getDimensionRelationList" resultMap="DimensionRelation">
+		SELECT *
+		FROM XOG_DIM_REL
+		WHERE DIM_ID_=#{dimId}
+	</select>
+
+	<select id="queryByCriteria" parameterType="com.hotent.org.persistence.query.DimensionRelationQuery$FindQuery" resultMap="DimensionRelation">
+		SELECT RES.*
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql" />
+	</select>
+
+	<select id="queryCountByCriteria" parameterType="com.hotent.org.persistence.query.DimensionRelationQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from XOG_DIM_REL RES
+		<include refid="criteriaSql" />
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.hotent.org.persistence.query.DimensionRelationQuery$UpdateQuery">
+		UPDATE XOG_DIM_REL RES
+		<include refid="updateDataCaluseSql" />
+		<include refid="criteriaSql" />
+	</update>
+
+	<delete id="deleteByDeleteQuery" parameterType="com.hotent.org.persistence.query.DimensionRelationQuery$DeleteQuery">
+		DELETE FROM XOG_DIM_REL 
+		<include refid="noPrefixCriteriaSql" />
+	</delete>
+
+
+	<sql id="criteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and res.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and res.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and res.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and res.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="noPrefixCriteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="updateDataCaluseSql">
+		<set>
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+
+	<sql id="orderByClauseSql">
+		<if test="orderByClause.valid">
+			ORDER BY
+			<foreach collection="orderByClause.orderBys" item="clause" separator=",">
+				${clause.property} ${clause.direction}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

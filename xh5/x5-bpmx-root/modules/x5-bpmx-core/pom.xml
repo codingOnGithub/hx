@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>x5-bpmx-parent</artifactId>
+		<groupId>com.hotent.bpmx</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../x5-bpmx-parent/pom.xml</relativePath>
+	</parent>
+	<groupId>com.hotent.bpmx</groupId>
+	<artifactId>x5-bpmx-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>流程引擎实现核心包</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.bpmx</groupId>
+			<artifactId>x5-bpmx-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hotent.bpmx</groupId>
+			<artifactId>x5-bpmx-native-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hotent.bpmx</groupId>
+			<artifactId>x5-bpmx-activiti</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hotent.org</groupId>
+			<artifactId>x5-org-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.org</groupId>
+			<artifactId>x5-org-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-db</artifactId>
+		</dependency>
+		
+	  	<dependency>
+	  		<groupId>com.hotent.bo</groupId>
+	  		<artifactId>x5-bo-core</artifactId>
+	  	</dependency>	
+	</dependencies>
+</project>

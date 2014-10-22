@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultUserGroupRelation">
+	<resultMap id="UserGroupRelation" type="com.hotent.org.persistence.model.DefaultUserGroupRelation">
+		<id property="relId" column="rel_id_" jdbcType="VARCHAR"/>
+		<result property="relTypeId" column="rel_type_id_" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id_" jdbcType="VARCHAR"/>
+		<result property="groupId" column="group_id_" jdbcType="VARCHAR"/>
+		<result property="dimId" column="dim_id_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time_" jdbcType="TIMESTAMP"/>
+		<result property="endTime" column="end_time_" jdbcType="TIMESTAMP"/>
+		<result property="createBy" column="create_by_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time_" jdbcType="TIMESTAMP"/>
+		<result property="updateBy" column="update_by_" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time_" jdbcType="TIMESTAMP"/>
+		<result property="from" column="from_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultUserGroupRelation">
+		INSERT INTO XOG_USER_GROUP
+		(rel_id_,rel_type_id_,user_id_,group_id_,dim_id_,status_,start_time_,end_time_,create_by_,create_time_,update_by_,update_time_,from_)
+		VALUES 
+		(#{relId,jdbcType=VARCHAR}, #{relTypeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{dimId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{from,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="UserGroupRelation">
+		SELECT * FROM XOG_USER_GROUP 
+		WHERE 
+		rel_id_=#{relId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="UserGroupRelation">
+		SELECT * FROM XOG_USER_GROUP
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY rel_id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultUserGroupRelation">
+		UPDATE XOG_USER_GROUP SET
+		rel_type_id_=#{relTypeId,jdbcType=VARCHAR},
+		user_id_=#{userId,jdbcType=VARCHAR},
+		group_id_=#{groupId,jdbcType=VARCHAR},
+		dim_id_=#{dimId,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		start_time_=#{startTime,jdbcType=TIMESTAMP},
+		end_time_=#{endTime,jdbcType=TIMESTAMP},
+		create_by_=#{createBy,jdbcType=VARCHAR},
+		create_time_=#{createTime,jdbcType=TIMESTAMP},
+		update_by_=#{updateBy,jdbcType=VARCHAR},
+		update_time_=#{updateTime,jdbcType=TIMESTAMP},
+		from_=#{from,jdbcType=VARCHAR}
+		WHERE
+		rel_id_=#{relId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM XOG_USER_GROUP 
+		WHERE
+		rel_id_=#{relId}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM XOG_USER_GROUP
+	    WHERE
+	    REL_TYPE_ID_=#{relTypeId}
+	</delete>    
+	
+	<select id="getUserGroupRelationList" resultMap="UserGroupRelation">
+	    SELECT *
+	    FROM XOG_USER_GROUP 
+	    WHERE REL_TYPE_ID_=#{relTypeId}
+	</select>
+	
+	<!-- criteria -->
+	<select id="queryByCriteria" parameterType="com.hotent.org.persistence.query.UserGroupRelationQuery" resultMap="UserGroupRelation">
+		SELECT RES.*
+		<include refid="queryByCriteriaSql" />
+		${orderByClause}
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.hotent.org.persistence.query.UserGroupRelationQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from XOG_USER_GROUP RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.hotent.org.persistence.query.UserGroupRelationUpdateQuery">
+		UPDATE XOG_USER_GROUP RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	<delete id="deleteByDeleteQuery" parameterType="com.hotent.org.persistence.query.UserGroupRelationDeleteQuery">
+		DELETE FROM XOG_USER_GROUP RES
+		<include refid="criteriaSql"/>
+	</delete>
+	
+	<sql id="criteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and RES.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and RES.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and RES.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				RES.${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+</mapper>

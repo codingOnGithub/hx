@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.BpmDefConfig">
+	<resultMap id="BpmDefConfig" type="com.hotent.bpmx.persistence.model.BpmDefConfig">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="informType" column="inform_type_" jdbcType="VARCHAR"/>
+		<result property="startInfoType" column="start_info_type_" jdbcType="VARCHAR"/>
+		<result property="skipFirstNode" column="skip_first_node_" jdbcType="VARCHAR"/>
+		<result property="chooseFirstAssignee" column="choose_first_assignee_" jdbcType="VARCHAR"/>
+		<result property="skipSameUser" column="skip_same_user_" jdbcType="VARCHAR"/>
+		<result property="allowCopyTo" column="allow_copy_to_" jdbcType="VARCHAR"/>
+		<result property="allowTransTo" column="allow_trans_to_" jdbcType="VARCHAR"/>
+		<result property="directStart" column="direct_start_" jdbcType="VARCHAR"/>
+		<result property="delDraft" column="del_draft_" jdbcType="VARCHAR"/>
+		<result property="allowRef" column="allow_ref_" jdbcType="VARCHAR"/>
+		<result property="refCount" column="ref_count_" jdbcType="NUMERIC"/>
+		<result property="allowPrintForm" column="allow_print_form_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.BpmDefConfig">
+		INSERT INTO bpm_def_config
+		(id_,inform_type_,start_info_type_,skip_first_node_,choose_first_assignee_,skip_same_user_,allow_copy_to_,allow_trans_to_,direct_start_,del_draft_,allow_ref_,ref_count_,allow_print_form_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{informType,jdbcType=VARCHAR}, #{startInfoType,jdbcType=VARCHAR}, #{skipFirstNode,jdbcType=VARCHAR}, #{chooseFirstAssignee,jdbcType=VARCHAR}, #{skipSameUser,jdbcType=VARCHAR}, #{allowCopyTo,jdbcType=VARCHAR}, #{allowTransTo,jdbcType=VARCHAR}, #{directStart,jdbcType=VARCHAR}, #{delDraft,jdbcType=VARCHAR}, #{allowRef,jdbcType=VARCHAR}, #{refCount,jdbcType=NUMERIC}, #{allowPrintForm,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmDefConfig">
+		SELECT * FROM bpm_def_config 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmDefConfig">
+		SELECT * FROM bpm_def_config
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY pro_def_id DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.BpmDefConfig">
+		UPDATE bpm_def_config SET
+		inform_type_=#{informType,jdbcType=VARCHAR},
+		start_info_type_=#{startInfoType,jdbcType=VARCHAR},
+		skip_first_node_=#{skipFirstNode,jdbcType=VARCHAR},
+		choose_first_assignee_=#{chooseFirstAssignee,jdbcType=VARCHAR},
+		skip_same_user_=#{skipSameUser,jdbcType=VARCHAR},
+		allow_copy_to_=#{allowCopyTo,jdbcType=VARCHAR},
+		allow_trans_to_=#{allowTransTo,jdbcType=VARCHAR},
+		direct_start_=#{directStart,jdbcType=VARCHAR},
+		del_draft_=#{delDraft,jdbcType=VARCHAR},
+		allow_ref_=#{allowRef,jdbcType=VARCHAR},
+		ref_count_=#{refCount,jdbcType=NUMERIC},
+		allow_print_form_=#{allowPrintForm,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_def_config 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	
+</mapper>

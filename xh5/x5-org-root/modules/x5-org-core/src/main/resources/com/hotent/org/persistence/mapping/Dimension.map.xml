@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultDimension">
+	<resultMap id="Dimension" type="com.hotent.org.persistence.model.DefaultDimension">
+		<id property="dimId" column="dim_id_" jdbcType="VARCHAR" />
+		<result property="name" column="name_" jdbcType="VARCHAR" />
+		<result property="dimKey" column="dim_key_" jdbcType="VARCHAR" />
+		<result property="isCombination" column="is_combination_" jdbcType="VARCHAR" />
+		<result property="isSystem" column="is_system_" jdbcType="VARCHAR" />
+		<result property="sn" column="sn_" jdbcType="NUMERIC" />
+		<result property="status" column="status_" jdbcType="VARCHAR" />
+		<result property="showType" column="show_type_" jdbcType="VARCHAR" />
+		<result property="gradeAuth" column="grade_auth_" jdbcType="VARCHAR" />
+		<result property="allowType" column="allow_type_" jdbcType="VARCHAR" />
+		<result property="desc" column="desc_" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultDimension">
+		INSERT INTO xog_dimension
+		(dim_id_,name_,dim_key_,is_combination_,is_system_,sn_,status_,show_type_,grade_auth_,allow_type_,desc_)
+		VALUES
+		(#{dimId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{dimKey,jdbcType=VARCHAR}, #{isCombination,jdbcType=VARCHAR}, #{isSystem,jdbcType=VARCHAR}, #{sn,jdbcType=NUMERIC},
+		#{status,jdbcType=VARCHAR}, #{showType,jdbcType=VARCHAR}, #{gradeAuth,jdbcType=VARCHAR}, #{allowType,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="get" parameterType="java.lang.String" resultMap="Dimension">
+		SELECT * FROM xog_dimension
+		WHERE
+		dim_id_=#{dimId}
+	</select>
+
+	<select id="getByDimKey" parameterType="java.lang.String" resultMap="Dimension">
+		SELECT * FROM xog_dimension
+		WHERE
+		DIM_KEY_=#{dimKey}
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultMap="Dimension">
+		SELECT * FROM xog_dimension
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY dim_id_ DESC
+		</if>
+	</select>
+
+	<select id="queryByTypeOrderBySnAsc" parameterType="java.lang.String" resultMap="Dimension">
+		SELECT * FROM xog_dimension
+		WHERE GROUP_TYPE_ = #{groupType}
+		ORDER BY SN_
+		asc
+	</select>
+
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultDimension">
+		UPDATE xog_dimension SET
+		name_=#{name,jdbcType=VARCHAR},
+		dim_key_=#{dimKey,jdbcType=VARCHAR},
+		is_combination_=#{isCombination,jdbcType=VARCHAR},
+		is_system_=#{isSystem,jdbcType=VARCHAR},
+		sn_=#{sn,jdbcType=NUMERIC},
+		status_=#{status,jdbcType=VARCHAR},
+		show_type_=#{showType,jdbcType=VARCHAR},
+		grade_auth_=#{gradeAuth,jdbcType=VARCHAR},
+		allow_type_=#{allowType,jdbcType=VARCHAR},
+		desc_=#{desc,jdbcType=VARCHAR}
+		WHERE
+		dim_id_=#{dimId}
+	</update>
+
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_dimension
+		WHERE
+		dim_id_=#{dimId}
+	</delete>
+
+
+	<select id="queryByCriteria" parameterType="com.hotent.org.persistence.query.DimensionQuery$FindQuery" resultMap="Dimension">
+		SELECT RES.*
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql" />
+	</select>
+
+	<select id="queryCountByCriteria" parameterType="com.hotent.org.persistence.query.DimensionQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from XOG_Dimension RES
+		<include refid="joinDimensionRelationSql" />
+		<include refid="joinRankTypeSql" />
+		<include refid="criteriaSql" />
+
+	</sql>
+
+	<update id="updateByUpdateQuery" parameterType="com.hotent.org.persistence.query.DimensionQuery$UpdateQuery">
+		UPDATE XOG_Dimension RES
+		<include refid="updateDataCaluseSql" />
+		<include refid="criteriaSql" />
+	</update>
+
+	<delete id="deleteByDeleteQuery" parameterType="com.hotent.org.persistence.query.DimensionQuery$DeleteQuery">
+		DELETE FROM XOG_Dimension 
+		<include refid="noPrefixCriteriaSql" />
+	</delete>
+
+	<sql id="joinDimensionRelationSql">
+		<if test="joinDimensionRelation">
+			INNER JOIN XOG_Dim_REL UREL ON UREL.REL_ID_ = RES.REL_ID_
+			<foreach collection="oredDimensionRelationCriteria" item="criteria" open="and (" close=")" separator="or" index="idx">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and UREL.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and UREL.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and UREL.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and UREL.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</if>
+	</sql>
+
+	<sql id="joinRankTypeSql">
+		<if test="joinRankType">
+			INNER JOIN XOG_RANK_TYPE RANK ON RANK.DIM_ID_ = RES.DIM_ID_
+			<foreach collection="oredRankTypeCriteria" item="criteria" open="and (" close=")" separator="or" index="idx">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and RANK.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and RANK.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and RANK.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and RANK.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</if>
+	</sql>
+
+	<sql id="criteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and res.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and res.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and res.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and res.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="noPrefixCriteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="updateDataCaluseSql">
+		<set>
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+
+	<sql id="orderByClauseSql">
+		<if test="orderByClause.valid">
+			ORDER BY
+			<foreach collection="orderByClause.orderBys" item="clause" separator=",">
+				${clause.property} ${clause.direction}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

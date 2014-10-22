@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.BpmWsNodeParams">
+	<resultMap id="BpmWsNodeParams" type="com.hotent.bpmx.persistence.model.BpmWsNodeParams">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="configId" column="config_id_" jdbcType="VARCHAR"/>
+		<result property="paramType" column="param_type_" jdbcType="VARCHAR"/>
+		<result property="varId" column="var_id_" jdbcType="VARCHAR"/>
+		<result property="wsName" column="ws_name_" jdbcType="VARCHAR"/>
+		<result property="dataType" column="data_type_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.BpmWsNodeParams">
+		INSERT INTO bpm_ws_node_params
+		(id_,config_id_,param_type_,var_id_,ws_name_,data_type_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{paramType,jdbcType=VARCHAR}, #{varId,jdbcType=VARCHAR}, #{wsName,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmWsNodeParams">
+		SELECT * FROM bpm_ws_node_params 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmWsNodeParams">
+		SELECT * FROM bpm_ws_node_params
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.BpmWsNodeParams">
+		UPDATE bpm_ws_node_params SET
+		config_id_=#{configId,jdbcType=VARCHAR},
+		param_type_=#{paramType,jdbcType=VARCHAR},
+		var_id_=#{varId,jdbcType=VARCHAR},
+		ws_name_=#{wsName,jdbcType=VARCHAR},
+		data_type_=#{dataType,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_ws_node_params 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM bpm_ws_node_params
+	    WHERE
+	    ws_node_id_=#{wsNodeId}
+	</delete>    
+	
+	<select id="getBpmWsNodeParamsList" resultMap="BpmWsNodeParams">
+	    SELECT *
+	    FROM bpm_ws_node_params 
+	    WHERE ws_node_id_=#{wsNodeId}
+	</select>
+	
+</mapper>

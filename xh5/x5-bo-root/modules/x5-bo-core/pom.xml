@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>x5-bo-parent</artifactId>
+    <groupId>com.hotent.bo</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+<relativePath>../x5-bo-parent/pom.xml</relativePath>    
+  </parent>
+  <groupId>com.hotent.bo</groupId>
+  <artifactId>x5-bo-core</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>x5-bo-core</name>  
+  <dependencies>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-db</artifactId>
+		</dependency>		
+				  
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>
+		
+		<dependency>
+		  	<groupId>com.hotent.bo</groupId>
+		  	<artifactId>bodef</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
+  </dependencies>
+</project>

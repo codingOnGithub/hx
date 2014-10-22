@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.DefaultBpmTask">
+	<resultMap id="BpmTask" type="com.hotent.bpmx.persistence.model.DefaultBpmTask">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="name" column="name_" jdbcType="VARCHAR"/>
+		<result property="subject" column="subject_" jdbcType="VARCHAR"/>
+		<result property="taskId" column="task_id_" jdbcType="VARCHAR"/>
+		<result property="execId" column="exec_id_" jdbcType="VARCHAR"/>
+		<result property="nodeId" column="node_id_" jdbcType="VARCHAR"/>
+		<result property="procInstId" column="proc_inst_id_" jdbcType="VARCHAR"/>
+		<result property="procDefId" column="proc_def_id_" jdbcType="VARCHAR"/>
+		<result property="procDefKey" column="proc_def_key_" jdbcType="VARCHAR"/>
+		<result property="procDefName" column="proc_def_name_" jdbcType="VARCHAR"/>
+		<result property="ownerId" column="owner_id_" jdbcType="VARCHAR"/>
+		<result property="assigneeId" column="assignee_id_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="priority" column="priority_" jdbcType="NUMERIC"/>
+		<result property="createTime" column="create_time_" jdbcType="TIMESTAMP"/>
+		<result property="dueTime" column="due_time_" jdbcType="TIMESTAMP"/>
+		<result property="suspendState" column="suspend_state_" jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmTask">
+		INSERT INTO bpm_task
+		(id_,name_,subject_,task_id_,exec_id_,node_id_,proc_inst_id_,proc_def_id_,proc_def_key_,proc_def_name_,owner_id_,assignee_id_,status_,priority_,create_time_,due_time_,suspend_state_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{execId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{procInstId,jdbcType=VARCHAR}, #{procDefId,jdbcType=VARCHAR}, #{procDefKey,jdbcType=VARCHAR}, #{procDefName,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{assigneeId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{priority,jdbcType=NUMERIC}, #{createTime,jdbcType=TIMESTAMP}, #{dueTime,jdbcType=TIMESTAMP}, #{suspendState,jdbcType=NUMERIC})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmTask">
+		SELECT * FROM bpm_task 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmTask">
+		SELECT * FROM bpm_task
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.DefaultBpmTask">
+		UPDATE bpm_task SET
+		name_=#{name,jdbcType=VARCHAR},
+		subject_=#{subject,jdbcType=VARCHAR},
+		task_id_=#{taskId,jdbcType=VARCHAR},
+		exec_id_=#{execId,jdbcType=VARCHAR},
+		node_id_=#{nodeId,jdbcType=VARCHAR},
+		proc_inst_id_=#{procInstId,jdbcType=VARCHAR},
+		proc_def_id_=#{procDefId,jdbcType=VARCHAR},
+		proc_def_key_=#{procDefKey,jdbcType=VARCHAR},
+		proc_def_name_=#{procDefName,jdbcType=VARCHAR},
+		owner_id_=#{ownerId,jdbcType=VARCHAR},
+		assignee_id_=#{assigneeId,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		priority_=#{priority,jdbcType=NUMERIC},
+		create_time_=#{createTime,jdbcType=TIMESTAMP},
+		due_time_=#{dueTime,jdbcType=TIMESTAMP},
+		suspend_state_=#{suspendState,jdbcType=NUMERIC}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_task 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	
+</mapper>

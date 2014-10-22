@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 继承父POM的设置 -->
+	<parent>
+		<groupId>com.hotent.base</groupId>
+		<artifactId>x5-base-root</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>com.hotent.base</groupId>
+	<artifactId>x5-base-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>base-root项目相关的公共配置</description>
+
+	<properties>
+		<maven-release-plugin.version>2.4.1</maven-release-plugin.version>
+		<svn.username>yancm</svn.username>
+		<svn.password>ycm_1020</svn.password>
+		<svn.tagBase>https://123.65.2.107:8443/svn/product/bpmx-test/tags/test-base-root/1.0.x/</svn.tagBase>
+	</properties>
+
+	<!-- scm svn的路径 -->
+	<scm>
+		<connection>scm:svn:https://123.65.2.107:8443/svn/product/x5/trunk/x5-base-root/</connection>
+		<developerConnection>scm:svn:https://123.65.2.107:8443/svn/product/x5/trunk/x5-base-root/</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.hotent.base</groupId>
+				<artifactId>x5-base-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hotent.base</groupId>
+				<artifactId>x5-base-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hotent.base</groupId>
+				<artifactId>x5-base-db</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<!-- 项目内所有模块均依赖的包 -->
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven-release-plugin.version}</version>
+				<configuration>
+					<username>${svn.username}</username>
+					<password>${svn.password}</password>
+					<tagBase>${svn.tagBase}</tagBase>
+					<releaseProfiles>release</releaseProfiles>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

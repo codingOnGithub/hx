@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:servicegroupcfg xmlns:tns="http://www.ksoft.com/service/group/manager"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ksoft.com/service/group/manager ../../main/resources/service-group-manager.xsd ">
+
+	<tns:servicegrouplist>
+		<tns:servicegroup groupno="yun9-weixin" sn="1" port="10090"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://www.yun9.com"
+			description="云九微信服务配置" createby="1" />
+
+		<tns:servicegroup groupno="188-weixin" sn="2" port="10090"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://192.168.1.188"
+			description="188微信服务配置" createby="1" />
+
+		<tns:servicegroup groupno="188-bpm" port="8080" sn="3"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://192.168.1.188"
+			description="188 bpm服务配置" createby="1" />
+	</tns:servicegrouplist>
+
+
+</tns:servicegroupcfg>

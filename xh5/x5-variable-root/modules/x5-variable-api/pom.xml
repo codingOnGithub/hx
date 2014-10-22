@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>x5-variable-parent</artifactId>
+    <groupId>com.hotent.variable</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../x5-variable-parent/pom.xml</relativePath>
+  </parent>
+  <groupId>com.hotent.variable</groupId>
+  <artifactId>x5-variable-api</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <description>变量模型API定义</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.hotent.base</groupId>
+			<artifactId>x5-base-api</artifactId>
+		</dependency>  
+	</dependencies>
+</project>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.BpmWsNode">
+	<resultMap id="BpmWsNode" type="com.hotent.bpmx.persistence.model.BpmWsNode" extends="com.hotent.bpmx.persistence.model.DefaultBpmNodeConfig.DefaultBpmNodeConfig">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="wsConfigs" column="ws_configs_" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.BpmWsNode">
+		INSERT INTO bpm_ws_node
+		(id_,ws_configs_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{wsConfigs,jdbcType=CLOB})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmWsNode">
+		SELECT ws.*,config.* FROM bpm_ws_node ws,bpm_node_config config
+		WHERE 
+		ws.id_=#{id} and config.config_id_=ws.id_
+	</select>		
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmWsNode">
+		SELECT ws.*,config.* FROM bpm_ws_node ws,bpm_node_config config		
+		<where>
+			ws.id_= config.config_id_
+			<if test="whereSql!=null">
+				and ${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.BpmWsNode">
+		UPDATE bpm_ws_node SET
+		ws_configs_=#{wsConfigs,jdbcType=CLOB}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_ws_node 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	
+</mapper>

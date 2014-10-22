@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.examples.school.entity.Student">
+	<resultMap id="Student" type="com.hotent.examples.school.entity.Student">
+		<id property="stuId" column="STU_ID_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="birthday" column="BIRTHDAY_" jdbcType="TIMESTAMP"/>
+		<result property="sex" column="SEX_" jdbcType="NUMERIC"/>
+		<result property="desc" column="DESC_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.examples.school.entity.Student">
+		INSERT INTO EX_STUDENT(STU_ID_,NAME_,BIRTHDAY_,	SEX_,	DESC_)
+		VALUES (#{stuId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{birthday,jdbcType=TIMESTAMP},#{sex,jdbcType=NUMERIC},#{desc,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="Student">
+		SELECT * FROM EX_STUDENT WHERE STU_ID_=#{stuId}
+	</select>
+	
+	<select id="queryByName" parameterType="java.util.Map" resultMap="Student">
+		SELECT * FROM EX_STUDENT
+		<where>
+			<if test="name!=null">
+				NAME_ like #{name}
+			</if>
+			<if test="desc!=null">
+			  and DESC_ like #{desc}
+			</if>
+		</where>
+		
+	</select>
+	
+	
+	<select id="query" parameterType="java.util.Map" resultMap="Student">
+		SELECT * FROM EX_STUDENT
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+	
+	</select>
+	
+	<update id="update" parameterType="com.hotent.examples.school.entity.Student">
+		UPDATE EX_STUDENT 
+		SET
+			NAME_=#{name,jdbcType=VARCHAR},
+			BIRTHDAY_=#{birthday,jdbcType=TIMESTAMP},
+			SEX_ =#{sex,jdbcType=NUMERIC},
+			DESC_=#{desc,jdbcType=VARCHAR}
+		WHERE 
+			STU_ID_=#{stuId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM EX_STUDENT WHERE STU_ID_=#{stuId}
+	</delete>
+	
+	<select id="getByName"  resultMap="Student">
+		SELECT * FROM EX_STUDENT WHERE NAME_=#{name}
+	</select>
+	
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bpmx.persistence.model.BpmNodeScript">
+	<resultMap id="BpmNodeScript" type="com.hotent.bpmx.persistence.model.BpmNodeScript">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="configId" column="config_id_" jdbcType="VARCHAR"/>
+		<result property="script" column="script_" jdbcType="CLOB"/>
+		<result property="scriptType" column="script_type_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bpmx.persistence.model.BpmNodeScript">
+		INSERT INTO bpm_node_script
+		(id_,config_id_,script_,script_type_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{script,jdbcType=CLOB}, #{scriptType,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BpmNodeScript">
+		SELECT * FROM bpm_node_script 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BpmNodeScript">
+		SELECT * FROM bpm_node_script
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<select id="queryByConfigId" parameterType="java.util.Map" resultMap="BpmNodeScript">
+		SELECT * FROM bpm_node_script
+		where 
+		config_id_ = ${configId}
+	</select>
+		
+	<update id="update" parameterType="com.hotent.bpmx.persistence.model.BpmNodeScript">
+		UPDATE bpm_node_script SET
+		config_id_=#{configId,jdbcType=VARCHAR},
+		script_=#{script,jdbcType=CLOB},
+		script_type_=#{scriptType,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM bpm_node_script 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	<delete id="removeByConfigId" parameterType="java.lang.String">
+		DELETE FROM bpm_node_script 
+		WHERE
+		CONFIG_ID_=#{configId}
+	</delete>
+	
+</mapper>

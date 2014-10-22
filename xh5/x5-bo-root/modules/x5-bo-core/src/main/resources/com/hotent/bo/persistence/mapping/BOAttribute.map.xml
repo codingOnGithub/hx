@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.BOAttribute">
+	<resultMap id="BOAttribute" type="com.hotent.bo.persistence.model.BOAttribute">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="defId" column="DEF_ID_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="desc" column="DESC_" jdbcType="VARCHAR"/>
+		<result property="type" column="TYPE_" jdbcType="VARCHAR"/>
+		<result property="isList" column="IS_LIST_" jdbcType="VARCHAR"/>
+		<result property="dataType" column="DATA_TYPE_" jdbcType="VARCHAR"/>
+		<result property="defaultValue" column="DEFAULT_VALUE_" jdbcType="VARCHAR"/>
+		<result property="format" column="FORMAT_" jdbcType="VARCHAR"/>
+		<result property="isRequired" column="IS_REQUIRED_" jdbcType="VARCHAR"/>
+		<result property="refType" column="REF_TYPE_" jdbcType="VARCHAR"/>
+		<result property="refId" column="REF_ID_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.BOAttribute">
+		INSERT INTO xbo_attr
+		(ID_,DEF_ID_,NAME_,DESC_,TYPE_,IS_LIST_,DATA_TYPE_,DEFAULT_VALUE_,FORMAT_,IS_REQUIRED_,REF_TYPE_,REF_ID_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{defId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{isList,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, #{isRequired,jdbcType=VARCHAR}, #{refType,jdbcType=VARCHAR}, #{refId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BOAttribute">
+		SELECT * FROM xbo_attr 
+		WHERE 
+		ID_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BOAttribute">
+		SELECT * FROM xbo_attr
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY ID_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.BOAttribute">
+		UPDATE xbo_attr SET
+		DEF_ID_=#{defId,jdbcType=VARCHAR},
+		NAME_=#{name,jdbcType=VARCHAR},
+		DESC_=#{desc,jdbcType=VARCHAR},
+		TYPE_=#{type,jdbcType=VARCHAR},
+		IS_LIST_=#{isList,jdbcType=VARCHAR},
+		DATA_TYPE_=#{dataType,jdbcType=VARCHAR},
+		DEFAULT_VALUE_=#{defaultValue,jdbcType=VARCHAR},
+		FORMAT_=#{format,jdbcType=VARCHAR},
+		IS_REQUIRED_=#{isRequired,jdbcType=VARCHAR},
+		REF_TYPE_=#{refType,jdbcType=VARCHAR},
+		REF_ID_=#{refId,jdbcType=VARCHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_attr 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM xbo_attr
+	    WHERE
+	    def_id_=#{defId}
+	</delete>    
+	
+	<select id="getBOAttributeList" resultMap="BOAttribute">
+	    SELECT *
+	    FROM xbo_attr 
+	    WHERE def_id_=#{defId}
+	</select>
+	
+</mapper>

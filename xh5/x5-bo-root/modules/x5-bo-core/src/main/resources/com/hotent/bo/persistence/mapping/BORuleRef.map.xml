@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.bo.persistence.model.BORuleRef">
+	<resultMap id="BORuleRef" type="com.hotent.bo.persistence.model.BORuleRef">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="ruleId" column="rule_id_" jdbcType="VARCHAR"/>
+		<result property="attrId" column="attr_id_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.bo.persistence.model.BORuleRef">
+		INSERT INTO xbo_rule_ref
+		(id_,rule_id_,attr_id_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{ruleId,jdbcType=VARCHAR}, #{attrId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="BORuleRef">
+		SELECT * FROM xbo_rule_ref 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="BORuleRef">
+		SELECT * FROM xbo_rule_ref
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.bo.persistence.model.BORuleRef">
+		UPDATE xbo_rule_ref SET
+		rule_id_=#{ruleId,jdbcType=VARCHAR},
+		attr_id_=#{attrId,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xbo_rule_ref 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	<delete id="removeRulesRefs" parameterType="java.util.Map">
+		DELETE FROM xbo_rule_ref 
+		WHERE
+		attr_id_=#{attrId}
+	</delete>
+	
+</mapper>

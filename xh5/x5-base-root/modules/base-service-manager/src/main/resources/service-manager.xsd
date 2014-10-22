@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ksoft.com/service/manager/config"
+	xmlns:tns="http://www.ksoft.com/service/manager/config" elementFormDefault="qualified">
+
+	<element name="servicecfg" type="tns:servicecfg"></element>
+
+	<complexType name="httpservice">
+		<attribute name="sn" type="string" use="required"></attribute>
+		<attribute name="groupno" type="string" use="required"></attribute>
+		<attribute name="servicetype" type="string" use="required"></attribute>
+		<attribute name="category" type="string" use="required"></attribute>
+		<attribute name="servicename" type="string" use="required"></attribute>
+		<attribute name="description" type="string" use="required"></attribute>
+		<attribute name="url" type="string" use="required"></attribute>
+		<attribute name="createby" type="string" use="required"></attribute>
+		<attribute name="updateby" type="string"></attribute>
+		<attribute name="createdate" type="string" use="required"></attribute>
+		<attribute name="disabled" type="int" use="required"></attribute>
+		<attribute name="updatedate" type="string"></attribute>
+		<attribute name="remark" type="string" ></attribute>
+	</complexType>
+	
+	<complexType name="webservice">
+		<attribute name="sn" type="string" use="required"></attribute>
+		<attribute name="groupno" type="string" use="required"></attribute>
+		<attribute name="servicetype" type="string" use="required"></attribute>
+		<attribute name="category" type="string" use="required"></attribute>
+		<attribute name="servicename" type="string" use="required"></attribute>
+		<attribute name="description" type="string" use="required"></attribute>
+		<attribute name="url" type="string" use="required"></attribute>
+		<attribute name="namespace" type="string"></attribute>
+		<attribute name="outputparam" type="string" use="required"></attribute>
+		<attribute name="createby" type="string" use="required"></attribute>
+		<attribute name="updateby" type="string"></attribute>
+		<attribute name="createdate" type="string" use="required"></attribute>
+		<attribute name="disabled" type="int" use="required"></attribute>
+		<attribute name="updatedate" type="string"></attribute>
+		<attribute name="remark" type="string" ></attribute>
+	</complexType>
+	
+	<complexType name="servicegroup">
+			<attribute name="sn" type="string" use="required"></attribute>
+			<attribute name="hostname" type="string" use="required"></attribute>
+			<attribute name="port" type="int"></attribute>
+			<attribute name="groupno" type="string" use="required"></attribute>
+			<attribute name="description" type="string" use="required"></attribute>
+			<attribute name="createby" type="string" use="required"></attribute>
+			<attribute name="updateby" type="string"></attribute>
+			<attribute name="createdate" type="string" use="required"></attribute>
+			<attribute name="disabled" type="int" use="required"></attribute>
+			<attribute name="updatedate" type="string"></attribute>
+			<attribute name="remark" type="string" ></attribute>
+	</complexType>
+
+	<complexType name="servicecfg">
+		<sequence>
+			<element name="httpservices" type="tns:httpservices" minOccurs="0"
+				maxOccurs="1"></element>
+			<element name="webservices" type="tns:webservices" minOccurs="0" 
+			maxOccurs="1"></element>
+			<element name="servicegroups" type="tns:servicegroups"
+				minOccurs="0" maxOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="httpservices">
+		<sequence>
+			<element name="httpservice" type="tns:httpservice" minOccurs="0"
+				maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="webservices">
+		<sequence>
+			<element name="webservice" type="tns:webservice" minOccurs="0" 
+			maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="servicegroups">
+		<sequence>
+			<element name="servicegroup" type="tns:servicegroup"
+				minOccurs="0" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+	
+</schema>

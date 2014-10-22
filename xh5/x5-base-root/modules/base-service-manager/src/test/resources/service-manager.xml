@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:servicecfg xmlns:tns="http://www.ksoft.com/service/manager/config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ksoft.com/service/manager/config ../../main/resources/service-manager.xsd ">
+
+	<tns:httpservices>
+		<tns:httpservice groupno="188-weixin" url="/http/weixin/getoauthtoken"
+			category="service" sn="1" servicename="getWxOAuth" disabled="0"
+			createdate="2014-01-16 10:30:00" servicetype="http" description="get weixin info"
+			createby="1" />
+		<tns:httpservice groupno="yun9-weixin" url="/http/weixin/getoauthtoken"
+			category="service" sn="2" servicename="getWxOAuth" disabled="0"
+			createdate="2014-01-16 10:30:00" servicetype="http" description="get weixin info"
+			createby="1" />
+		<tns:httpservice groupno="yun9-user" url="/http/cmd/user/findAliasByAliasno"
+			category="service" sn="3" servicename="findAliasByAliasno" disabled="0"
+			createdate="2014-01-16 10:30:00" servicetype="http" description="get user info"
+			createby="1" />
+		<tns:httpservice groupno="weixinopen" url="/cgi-bin/groups/get"
+			category="service" sn="6" servicename="getGroupInfo" disabled="0"
+			createdate="2014-01-16 10:30:00" servicetype="http" description="get group info"
+			createby="1" />
+	</tns:httpservices>
+	
+	<tns:webservices>
+		<tns:webservice groupno="188-bpm"
+			url="/bpmx3/service/ProcessService?wsdl" category="service" sn="4"
+			servicename="getTasksByUserId" outputparam="List" disabled="0"
+			createdate="2014-01-16 10:30:00" servicetype="ws" description="get task info"
+			createby="1" namespace="http://api.webservice.platform.hotent.com/" />
+	</tns:webservices>
+	
+	<tns:servicegroups>
+		<tns:servicegroup groupno="yun9-weixin" sn="1" port="10090"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://www.yun9.com"
+			description="云九微信服务配置" createby="1" />
+
+		<tns:servicegroup groupno="188-weixin" sn="2" port="10090"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://192.168.1.188"
+			description="188微信服务配置" createby="1" />
+
+		<tns:servicegroup groupno="188-bpm" port="8080" sn="3"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://192.168.1.188"
+			description="188 bpm服务配置" createby="1" />
+		
+		<tns:servicegroup groupno="yun9-user" sn="4" port="10088"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="http://www.yun9.com"
+			description="188用户服务配置" createby="1" />
+			
+		<tns:servicegroup groupno="weixinopen" sn="4" port="0"
+			disabled="0" createdate="2014-01-16 10:30:00" hostname="https://api.weixin.qq.com"
+			description="188用户服务配置" createby="1" />
+			
+	</tns:servicegroups>
+	
+	
+	
+</tns:servicecfg>

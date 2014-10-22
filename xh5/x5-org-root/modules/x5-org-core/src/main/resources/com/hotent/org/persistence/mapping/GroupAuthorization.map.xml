@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultGroupAuthorization">
+	<resultMap id="DefaultGroupAuthorization" type="com.hotent.org.persistence.model.DefaultGroupAuthorization">
+		<id property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="relTypeId" column="rel_type_id_" jdbcType="VARCHAR"/>
+		<result property="managerId" column="manager_id_" jdbcType="VARCHAR"/>
+		<result property="groupId" column="group_id_" jdbcType="VARCHAR"/>
+		<result property="dimId" column="dim_id_" jdbcType="VARCHAR"/>
+		<result property="showType" column="show_type_" jdbcType="VARCHAR"/>
+		<result property="groupPerms" column="group_perms_" jdbcType="VARCHAR"/>
+		<result property="userPerms" column="user_perms_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultGroupAuthorization">
+		INSERT INTO XOG_GROUP_AUTH
+		(id_,rel_type_id_,manager_id_,group_id_,dim_id_,show_type_,group_perms_,user_perms_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{relTypeId,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{dimId,jdbcType=VARCHAR}, #{showType,jdbcType=VARCHAR}, #{groupPerms,jdbcType=VARCHAR}, #{userPerms,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="DefaultGroupAuthorization">
+		SELECT * FROM XOG_GROUP_AUTH 
+		WHERE 
+		id_=#{id}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="DefaultGroupAuthorization">
+		SELECT * FROM XOG_GROUP_AUTH
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultGroupAuthorization">
+		UPDATE XOG_GROUP_AUTH SET
+		rel_type_id_=#{relTypeId,jdbcType=VARCHAR},
+		manager_id_=#{managerId,jdbcType=VARCHAR},
+		group_id_=#{groupId,jdbcType=VARCHAR},
+		dim_id_=#{dimId,jdbcType=VARCHAR},
+		show_type_=#{showType,jdbcType=VARCHAR},
+		group_perms_=#{groupPerms,jdbcType=VARCHAR},
+		user_perms_=#{userPerms,jdbcType=VARCHAR}
+		WHERE
+		id_=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM XOG_GROUP_AUTH 
+		WHERE
+		id_=#{id}
+	</delete>
+	
+	<delete id="delByMainId">
+	    DELETE FROM XOG_GROUP_AUTH
+	    WHERE
+	    REL_TYPE_ID_=#{relTypeId}
+	</delete>    
+	
+	<select id="getDefaultGroupAuthorizationList" resultMap="DefaultGroupAuthorization">
+	    SELECT *
+	    FROM XOG_GROUP_AUTH 
+	    WHERE REL_TYPE_ID_=#{relTypeId}
+	</select>
+	
+</mapper>

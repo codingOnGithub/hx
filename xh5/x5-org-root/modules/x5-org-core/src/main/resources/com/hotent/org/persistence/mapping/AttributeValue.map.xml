@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultAttributeValue">
+	<resultMap id="AttributeValue" type="com.hotent.org.persistence.model.DefaultAttributeValue">
+		<id property="valId" column="val_id_" jdbcType="VARCHAR" />
+		<result property="attrId" column="attr_id_" jdbcType="VARCHAR" />
+		<result property="attrKey" column="attr_key_" jdbcType="VARCHAR" />
+		<result property="userId" column="user_id_" jdbcType="VARCHAR" />
+		<result property="groupId" column="group_id_" jdbcType="VARCHAR" />
+		<result property="dataType" column="data_type_" jdbcType="VARCHAR" />
+		<result property="textVal" column="text_val" jdbcType="VARCHAR" />
+		<result property="dateVal" column="date_val" jdbcType="TIMESTAMP" />
+		<result property="longVal" column="long_val" jdbcType="NUMERIC" />
+		<result property="decVal" column="dec_val" jdbcType="NUMERIC" />
+	</resultMap>
+
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultAttributeValue">
+		INSERT INTO xog_attr_val
+		(val_id_,attr_id_,attr_key_,user_id_,group_id_,data_type_,text_val,date_val,long_val,dec_val)
+		VALUES
+		(#{valId,jdbcType=VARCHAR}, #{attrId,jdbcType=VARCHAR}, #{attrKey,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR},
+		#{textVal,jdbcType=VARCHAR}, #{dateVal,jdbcType=TIMESTAMP}, #{longVal,jdbcType=NUMERIC}, #{decVal,jdbcType=NUMERIC})
+	</insert>
+
+	<select id="get" parameterType="java.lang.String" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val
+		WHERE
+		val_id_=#{valId}
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY val_id_ DESC
+		</if>
+	</select>
+
+
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultAttributeValue">
+		UPDATE xog_attr_val SET
+		attr_id_=#{attrId,jdbcType=VARCHAR},
+		attr_key_=#{attrKey,jdbcType=VARCHAR},
+		user_id_=#{userId,jdbcType=VARCHAR},
+		group_id_=#{groupId,jdbcType=VARCHAR},
+		data_type_=#{dataType,jdbcType=VARCHAR},
+		text_val=#{textVal,jdbcType=VARCHAR},
+		date_val=#{dateVal,jdbcType=TIMESTAMP},
+		long_val=#{longVal,jdbcType=NUMERIC},
+		dec_val=#{decVal,jdbcType=NUMERIC}
+		WHERE
+		val_id_=#{valId}
+	</update>
+
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_attr_val
+		WHERE
+		val_id_=#{valId}
+	</delete>
+
+
+	<select id="queryByCriteria" parameterType="com.hotent.org.persistence.query.AttributeValueQuery$FindQuery" resultMap="AttributeValue">
+		SELECT RES.*
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql" />
+	</select>
+
+
+	<select id="queryCountByCriteria" parameterType="com.hotent.org.persistence.query.AttributeValueQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<update id="updateByUpdateQuery" parameterType="com.hotent.org.persistence.query.AttributeValueQuery$UpdateQuery">
+		UPDATE xog_attr_val RES
+		<include refid="updateDataCaluseSql" />
+		<include refid="criteriaSql" />
+	</update>
+
+
+	<delete id="deleteByDeleteQuery" parameterType="com.hotent.org.persistence.query.AttributeValueQuery$DeleteQuery">
+		DELETE FROM xog_attr_val 
+		<include refid="noPrefixCriteriaSql" />
+	</delete>
+
+
+	<sql id="queryByCriteriaSql">
+		from xog_attr_val RES
+		<include refid="criteriaSql" />
+	</sql>
+
+	<sql id="criteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and RES.${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and RES.${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and RES.${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="noPrefixCriteriaSql">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="updateDataCaluseSql">
+		<set>
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				RES.${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	<sql id="orderByClauseSql">
+		<if test="orderByClause.valid">
+			ORDER BY
+			<foreach collection="orderByClause.orderBys" item="clause" separator=",">
+				${clause.property} ${clause.direction}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

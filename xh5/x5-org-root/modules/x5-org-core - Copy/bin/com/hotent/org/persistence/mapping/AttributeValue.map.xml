@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultAttributeValue">
+	<resultMap id="AttributeValue" type="com.hotent.org.persistence.model.DefaultAttributeValue">
+		<id property="valId" column="val_id_" jdbcType="VARCHAR"/>
+		<result property="attrId" column="attr_id_" jdbcType="VARCHAR"/>
+		<result property="attrKey" column="attr_key_" jdbcType="VARCHAR"/>
+		<result property="userId" column="user_id_" jdbcType="VARCHAR"/>
+		<result property="groupId" column="group_id_" jdbcType="VARCHAR"/>
+		<result property="dataType" column="data_type_" jdbcType="VARCHAR"/>
+		<result property="textVal" column="text_val" jdbcType="VARCHAR"/>
+		<result property="dateVal" column="date_val" jdbcType="DATE"/>
+		<result property="longVal" column="long_val" jdbcType="NUMERIC"/>
+		<result property="decVal" column="dec_val" jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultAttributeValue">
+		INSERT INTO xog_attr_val
+		(val_id_,attr_id_,attr_key_,user_id_,group_id_,data_type_,text_val,date_val,long_val,dec_val)
+		VALUES 
+		(#{valId,jdbcType=VARCHAR}, #{attrId,jdbcType=VARCHAR}, #{attrKey,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{textVal,jdbcType=VARCHAR}, #{dateVal,jdbcType=DATE}, #{longVal,jdbcType=NUMERIC}, #{decVal,jdbcType=NUMERIC})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val 
+		WHERE 
+		val_id_=#{valId}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY val_id_ DESC
+		</if>
+	</select>
+	
+	<select id="queryByUserKey"   parameterType="java.lang.String" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val 
+		WHERE 
+		user_id_=#{userKey}
+	</select>
+	
+	<select id="queryByGroupKey"   parameterType="java.lang.String" resultMap="AttributeValue">
+		SELECT * FROM xog_attr_val 
+		WHERE 
+		group_id_=#{groupKey}
+	</select>
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultAttributeValue">
+		UPDATE xog_attr_val SET
+		attr_id_=#{attrId,jdbcType=VARCHAR},
+		attr_key_=#{attrKey,jdbcType=VARCHAR},
+		user_id_=#{userId,jdbcType=VARCHAR},
+		group_id_=#{groupId,jdbcType=VARCHAR},
+		data_type_=#{dataType,jdbcType=VARCHAR},
+		text_val=#{textVal,jdbcType=VARCHAR},
+		date_val=#{dateVal,jdbcType=DATE},
+		long_val=#{longVal,jdbcType=NUMERIC},
+		dec_val=#{decVal,jdbcType=NUMERIC}
+		WHERE
+		val_id_=#{valId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_attr_val 
+		WHERE
+		val_id_=#{valId}
+	</delete>
+	
+</mapper>

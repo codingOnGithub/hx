@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.jee-soft.cn/bpmnx/plugin" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.jee-soft.cn/bpmnx/plugin">
+
+	<xsd:element name="executionPlugin" type="executionPlugin">
+	</xsd:element>
+
+	<xsd:element name="taskPlugin" type="taskPlugin">
+	</xsd:element>
+
+	<xsd:complexType name="executionPlugin">
+		<xsd:sequence minOccurs="1" maxOccurs="1">
+			<xsd:element name="plugin-def" type="plugin-def"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="event" type="xsd:string" use="required"></xsd:attribute>
+		<xsd:attribute name="class" type="xsd:string" use="required"></xsd:attribute>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="plugin-def">
+		<xsd:sequence>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="taskPlugin">
+		<xsd:sequence minOccurs="1" maxOccurs="1">
+			<xsd:element name="plugin-def" type="plugin-def"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="event" type="xsd:string"  use="required"></xsd:attribute>
+		<xsd:attribute name="class" type="xsd:string"  use="required"></xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotent.org.persistence.model.DefaultUser">
+	<resultMap id="User" type="com.hotent.org.persistence.model.DefaultUser">
+		<id property="userId" column="user_id_" jdbcType="VARCHAR"/>
+		<result property="account" column="account_" jdbcType="VARCHAR"/>
+		<result property="fullname" column="fullname_" jdbcType="VARCHAR"/>
+		<result property="status" column="status_" jdbcType="VARCHAR"/>
+		<result property="pwd" column="pwd_" jdbcType="VARCHAR"/>
+		<result property="createBy" column="create_by_" jdbcType="VARCHAR"/>
+		<result property="createTime" column="create_time_" jdbcType="DATE"/>
+		<result property="createOrgId" column="create_org_id_" jdbcType="VARCHAR"/>
+		<result property="updateBy" column="update_by_" jdbcType="VARCHAR"/>
+		<result property="updateTime" column="update_time_" jdbcType="DATE"/>
+		<result property="sex" column="sex_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="create" parameterType="com.hotent.org.persistence.model.DefaultUser">
+		INSERT INTO xog_user
+		(user_id_,account_,fullname_,status_,pwd_,create_by_,create_time_,create_org_id_,update_by_,update_time_,sex_)
+		VALUES 
+		(#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createOrgId,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, #{sex,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="User">
+		SELECT * FROM xog_user 
+		WHERE 
+		user_id_=#{userId}
+	</select>
+	
+	<select id="getByAccount"   parameterType="java.lang.String" resultMap="User">
+		SELECT * FROM xog_user 
+		WHERE 
+		account_=#{account}
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="User">
+		SELECT * FROM xog_user
+		<where>
+			<if test="whereSql!=null">
+				${whereSql}
+			</if>
+		</where>
+		<if test="orderBySql!=null">
+			ORDER BY ${orderBySql}
+		</if>
+		<if test="orderBySql==null">
+			ORDER BY user_id_ DESC
+		</if>
+	</select>
+	
+	<update id="update" parameterType="com.hotent.org.persistence.model.DefaultUser">
+		UPDATE xog_user SET
+		account_=#{account,jdbcType=VARCHAR},
+		fullname_=#{fullname,jdbcType=VARCHAR},
+		status_=#{status,jdbcType=VARCHAR},
+		pwd_=#{pwd,jdbcType=VARCHAR},
+		create_by_=#{createBy,jdbcType=VARCHAR},
+		create_time_=#{createTime,jdbcType=DATE},
+		create_org_id_=#{createOrgId,jdbcType=VARCHAR},
+		update_by_=#{updateBy,jdbcType=VARCHAR},
+		update_time_=#{updateTime,jdbcType=DATE},
+		sex_=#{sex,jdbcType=VARCHAR}
+		WHERE
+		user_id_=#{userId}
+	</update>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM xog_user 
+		WHERE
+		user_id_=#{userId}
+	</delete>
+	
+	<select id="queryByUserRelation" parameterType="java.util.Map" resultMap="User">
+		SELECT a.* FROM xog_user a
+		WHERE a.user_id_ IN
+		(SELECT b.rel_user_id_ FROM xog_user_rel b
+		WHERE b.user_id_=#{userId}
+		AND b.rel_type_=#{relType}
+		)
+	</select>
+	
+	<select id="queryByGroupRelation" parameterType="java.util.Map" resultMap="User">
+		SELECT a.* FROM xog_user a
+		WHERE a.user_id_ IN (
+		SELECT b.user_id_ FROM xog_user_group b
+		WHERE b.group_id_=#{groupId}
+		AND b.rel_type_=#{relType}
+		)
+	</select>
+	
+</mapper>
